@@ -1,4 +1,4 @@
-import { action, computed, makeObservable, observable } from "mobx";
+import { makeAutoObservable } from "mobx";
 import { nanoid } from "nanoid";
 import { Channel, Player, Time, ToneAudioBuffer, ToneAudioNode } from "tone";
 import decodeArrayBuffer from "../utils/decodeArrayBuffer";
@@ -14,6 +14,7 @@ export class Sample {
   public name!: string;
   public position: number = 0;
   public offset: number = 0;
+  public speed = 1;
   public length: number;
   public fullLength: number;
   public effectsChain: ToneAudioNode[];
@@ -41,19 +42,25 @@ export class Sample {
     this.fullLength = buffer.duration;
     this.length = length ?? this.fullLength - Time(offset).toSeconds();
 
-    makeObservable(this);
+    makeAutoObservable(this);
   }
 
   get channel(): Channel {
     return this.track.channel;
   }
 
-  public set(options: { position?: number; offset?: number; length?: number }) {
+  public set(options: {
+    position?: number;
+    offset?: number;
+    length?: number;
+    speed?: number;
+  }) {
     this.position = options.position ?? this.position;
     this.offset = options.offset ?? this.offset;
     this.length = options.length ?? this.length;
 
     this.player.unsync().sync().start(this.position, this.offset, this.length);
+    this.player.playbackRate = options.speed || 1;
   }
 
   copy(): Sample {

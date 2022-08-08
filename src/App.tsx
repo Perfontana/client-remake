@@ -1,4 +1,6 @@
 import { ChakraProvider } from "@chakra-ui/react";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 import {
   BrowserRouter,
   Navigate,
@@ -13,26 +15,28 @@ import { MainPage } from "./pages/main-page/main-page";
 
 function App() {
   return (
-    <ChakraProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<MainPage />} />
-          <Route
-            path="room"
-            element={
-              <Game>
-                <Outlet />
-              </Game>
-            }
-          >
-            <Route index={true} element={<Navigate to={"/"} />} />
-            <Route path=":id" element={<Lobby />} />
-            <Route path=":id/editor" element={<Editor />} />
-            Editor
-          </Route>
-        </Routes>
-      </BrowserRouter>
-    </ChakraProvider>
+    <DndProvider backend={HTML5Backend}>
+      <ChakraProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<MainPage />} />
+            <Route
+              path="room"
+              element={
+                <Game>
+                  <Outlet />
+                </Game>
+              }
+            >
+              <Route index={true} element={<Navigate to={"/"} />} />
+              <Route path=":id" element={<Lobby />} />
+              <Route path=":id/editor" element={<Editor />} />
+              Editor
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </ChakraProvider>
+    </DndProvider>
   );
 }
 

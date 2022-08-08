@@ -1,4 +1,5 @@
 import { makeAutoObservable } from "mobx";
+import { SCALE_1_SECONDS } from "../pages/game/editor/editor-tracks";
 
 class Mark {
   value: number = 0;
@@ -42,7 +43,7 @@ class Marks {
 
   setScale(newScale: number) {
     this.scale = newScale;
-    this.widthSeconds = 30 * this.scale;
+    this.widthSeconds = SCALE_1_SECONDS * this.scale;
   }
 
   setPosition(newPosition: number) {

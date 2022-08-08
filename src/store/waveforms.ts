@@ -1,5 +1,5 @@
 import drawSoundWave from "../utils/drawSoundWave";
-import { Sample } from "./Sample";
+import { Sample } from "./sample";
 
 class Waveforms {
   waveforms: Record<string, string> = {};

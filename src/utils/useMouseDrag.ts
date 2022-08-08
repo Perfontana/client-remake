@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { MouseEvent, useCallback, useEffect, useState } from "react";
 
 export interface UseMouseDragParams {
   button: number;
@@ -14,8 +14,10 @@ export const useMouseDrag = ({
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
 
-  const handleMouseUp = useCallback(
-    (e: MouseEvent) => {
+  const onMouseUp = useCallback(
+    (e: MouseEvent<HTMLElement>) => {
+      console.log("up");
+
       if (e.button === button) {
         setIsDragging(false);
       }
@@ -23,17 +25,16 @@ export const useMouseDrag = ({
     [setIsDragging, button]
   );
 
-  const handleMouseMovement = useCallback(
-    (e: MouseEvent) => {
-      if (isDragging)
-        onChange &&
-          onChange({ x: dragStart.x - e.clientX, y: dragStart.y - e.clientY });
+  const onMouseMove = useCallback(
+    (e: MouseEvent<HTMLElement>) => {
+      onChange &&
+        onChange({ x: dragStart.x - e.clientX, y: dragStart.y - e.clientY });
     },
     [dragStart, isDragging, onChange]
   );
 
-  const changePosition = useCallback(
-    (e: MouseEvent) => {
+  const onMouseDown = useCallback(
+    (e: MouseEvent<HTMLElement>) => {
       if (e.button === button) {
         setDragStart({ x: e.clientX, y: e.clientY });
         setIsDragging(true);
@@ -41,20 +42,20 @@ export const useMouseDrag = ({
         onStart && onStart(dragStart);
       }
     },
-    [setDragStart, setIsDragging, onStart, handleMouseMovement]
+    [setDragStart, setIsDragging, onStart]
   );
 
-  useEffect(() => {}, [dragStart, handleMouseMovement, handleMouseUp]);
-
   useEffect(() => {
-    document.addEventListener("mousedown", changePosition);
-    document.addEventListener("mousemove", handleMouseMovement);
-    document.addEventListener("mouseup", handleMouseUp);
+    if (isDragging) {
+      document.addEventListener("mousemove", onMouseMove);
+      document.addEventListener("mouseup", onMouseUp);
+    }
 
     return () => {
-      document.removeEventListener("mousedown", changePosition);
-      document.removeEventListener("mousemove", handleMouseMovement);
-      document.removeEventListener("mouseup", handleMouseUp);
+      document.removeEventListener("mousemove", onMouseMove);
+      document.removeEventListener("mouseup", onMouseUp);
     };
-  }, [changePosition, handleMouseMovement, handleMouseUp]);
+  }, [isDragging]);
+
+  return { onMouseDown };
 };

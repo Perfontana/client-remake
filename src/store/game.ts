@@ -1,10 +1,4 @@
-import {
-  action,
-  makeAutoObservable,
-  makeObservable,
-  observable,
-  runInAction,
-} from "mobx";
+import { action, makeAutoObservable, runInAction } from "mobx";
 import { isErrorResponse } from "../api/config";
 import { getRoom, getSong, startGame } from "../api/rooms";
 import { SocketClient } from "../socket/socket-types";
