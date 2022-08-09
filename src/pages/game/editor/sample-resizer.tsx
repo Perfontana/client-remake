@@ -11,6 +11,7 @@ export const SampleResizer = observer(({ sample }: { sample: Sample }) => {
     position: 0,
     length: 0,
     offset: 0,
+    speed: 1,
   });
 
   const onOffsetChange = ({ x }: any) => {
@@ -42,14 +43,13 @@ export const SampleResizer = observer(({ sample }: { sample: Sample }) => {
       );
 
       const position = startValues.position + deltaSeconds;
-      const length = startValues.length - deltaSeconds;
+      const length = startValues.length / startValues.speed - deltaSeconds;
+      const speed = startValues.length / length;
 
       console.log(startValues.length / length);
 
-      if (length < 0.2) return;
-
       sample.set({
-        speed: startValues.length / length,
+        speed,
         position,
       });
     }
@@ -74,6 +74,7 @@ export const SampleResizer = observer(({ sample }: { sample: Sample }) => {
       length: sample.length,
       offset: sample.offset,
       position: sample.position,
+      speed: sample.speed,
     });
   };
 
