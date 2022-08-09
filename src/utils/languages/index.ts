@@ -51,4 +51,17 @@ export interface UIText {
       save: string;
     };
   };
+  editor: {
+    dropArea: {
+      dropFile: string;
+      click: string;
+    };
+    header: {
+      play: string;
+      pause: string;
+      stop: string;
+      startRecording: string;
+      stopRecording: string;
+    };
+  };
 }

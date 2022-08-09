@@ -16,8 +16,6 @@ export const useMouseDrag = ({
 
   const onMouseUp = useCallback(
     (e: MouseEvent<HTMLElement>) => {
-      console.log("up");
-
       if (e.button === button) {
         setIsDragging(false);
       }

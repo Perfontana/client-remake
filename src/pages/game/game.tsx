@@ -41,7 +41,6 @@ export const Game = observer(({ children }: GameProps & PropsWithChildren) => {
       },
       onRoomUpdated(room) {
         toast({ title: "Room updated" });
-        console.log(room);
         game.set(room);
       },
       onRoundStarted({ currentRound }) {

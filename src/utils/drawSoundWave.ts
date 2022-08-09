@@ -31,7 +31,7 @@ const drawSoundWave = async (
   canvas.width = Math.ceil(float32Array.length / chunkSize + margin * 2);
 
   for (let index in array) {
-    ctx.strokeStyle = "black";
+    ctx.strokeStyle = "#33ffff";
     ctx.beginPath();
     ctx.moveTo(
       margin + Number(index),

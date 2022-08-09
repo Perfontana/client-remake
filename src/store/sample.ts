@@ -17,7 +17,6 @@ export class Sample {
   public speed = 1;
   public length: number;
   public fullLength: number;
-  public effectsChain: ToneAudioNode[];
 
   constructor(
     buffer: ToneAudioBuffer,
@@ -30,8 +29,6 @@ export class Sample {
     this.player = new Player();
     this.player.buffer = buffer;
     this.player.sync().start(position, offset, length);
-
-    this.effectsChain = [this.player];
 
     this.connectChannel(track.channel);
 
@@ -58,9 +55,10 @@ export class Sample {
     this.position = options.position ?? this.position;
     this.offset = options.offset ?? this.offset;
     this.length = options.length ?? this.length;
+    this.speed = options.speed ?? this.speed;
 
     this.player.unsync().sync().start(this.position, this.offset, this.length);
-    this.player.playbackRate = options.speed || 1;
+    this.player.playbackRate = this.speed;
   }
 
   copy(): Sample {
@@ -74,23 +72,12 @@ export class Sample {
     );
   }
 
-  get lastEffect(): ToneAudioNode {
-    return this.effectsChain[this.effectsChain.length - 1];
-  }
-
-  pushEffect(effect: ToneAudioNode) {
-    this.insertEffectAfter(
-      effect,
-      this.effectsChain[this.effectsChain.length - 2]
-    );
-  }
-
   removeChannel() {
-    this.lastEffect.disconnect(this.channel);
+    this.player.disconnect(this.channel);
   }
 
   connectChannel(channel: Channel) {
-    this.lastEffect.connect(channel);
+    this.player.connect(channel);
   }
 
   connectToTrack(track: Track) {
@@ -100,55 +87,6 @@ export class Sample {
     track.addSample(this);
     this.connectChannel(track.channel);
     this.track = track;
-  }
-
-  unshiftEffect(effect: ToneAudioNode) {
-    this.insertEffectAfter(effect);
-  }
-
-  insertEffectAfter(
-    effectToInsert: ToneAudioNode,
-    effectBefore?: ToneAudioNode
-  ) {
-    if (!effectBefore) effectBefore = this.player;
-
-    const effectIndex = this.effectsChain.indexOf(effectBefore);
-
-    if (effectIndex < 0) return;
-
-    // Changing destinations from
-    // effectBefore -> destination
-    // to
-    // effectBefore -> effectToInsert -> destination
-    const effectBeforeDestination = effectBefore.context.destination;
-    effectBefore.disconnect(effectBeforeDestination);
-    effectBefore.connect(effectToInsert);
-    effectToInsert.connect(effectBeforeDestination);
-
-    this.effectsChain.splice(effectIndex + 1, 0, effectToInsert);
-  }
-
-  removeEffect(effect: ToneAudioNode) {
-    const effectIndex = this.effectsChain.indexOf(effect);
-
-    if (effectIndex < 0) return;
-
-    const effectBefore = this.effectsChain[effectIndex - 1];
-    const effectAfter =
-      effectIndex < this.effectsChain.length - 1
-        ? this.effectsChain[effectIndex + 1]
-        : this.player.context.destination;
-
-    // Changing
-    // effectBefore -> effect -> effectAfter
-    // to
-    // effectBefore -> effectAfter
-    effectBefore.disconnect(effect);
-    effectBefore.connect(effectAfter);
-
-    effect.disconnect(effectAfter);
-
-    this.effectsChain.splice(effectIndex, 1);
   }
 
   cut(cutPosition: number) {

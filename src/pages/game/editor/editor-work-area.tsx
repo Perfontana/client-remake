@@ -1,15 +1,16 @@
 import { HStack } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
-import { EditorTrackOptions } from "./editor-track-options";
+import tracks from "../../../store/tracks";
+import { EditorTrackOptionsList } from "./editor-track-options-list";
 import { EditorTracks } from "./editor-tracks";
 
 export const TRACK_HEIGHT = 50;
 
 export const EditorWorkArea = observer(() => {
-  return (
+  return tracks.tracks.length ? (
     <HStack align={"start"} spacing={0} justify={"start"}>
-      <EditorTrackOptions />
+      <EditorTrackOptionsList />
       <EditorTracks />
     </HStack>
-  );
+  ) : null;
 });

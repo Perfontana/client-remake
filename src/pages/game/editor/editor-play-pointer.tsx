@@ -10,7 +10,18 @@ export const EditorPlayPointer = observer(() => {
       h={"full"}
       position="absolute"
       zIndex={10}
-      left={editor.playPositionPixels + editor.leftOffset}
-    ></Box>
+      left={`${editor.playPositionPixels}px`}
+    >
+      <div
+        style={{
+          width: "0",
+          height: "0",
+          borderStyle: "solid",
+          borderWidth: "6px 6px 0 6px",
+          transform: "translate(-50%, 0)",
+          borderColor: "#ffffff transparent transparent transparent",
+        }}
+      ></div>
+    </Box>
   );
 });

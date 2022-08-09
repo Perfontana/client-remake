@@ -6,7 +6,8 @@ export const pointFromPixelsToSeconds = (
   scale: number,
   position: number
 ) => {
-  const positionSeconds = (position / width) * SCALE_1_SECONDS * scale;
+  const positionSeconds =
+    (Math.floor(position) / width) * SCALE_1_SECONDS * scale;
 
   const seconds = (pixels / width) * SCALE_1_SECONDS * scale + positionSeconds;
 
@@ -29,7 +30,8 @@ export const pointFromSecondsToPixels = (
   scale: number,
   position: number
 ) => {
-  const pixels = (seconds / (SCALE_1_SECONDS * scale)) * width - position;
+  const pixels =
+    (seconds / (SCALE_1_SECONDS * scale)) * width - Math.floor(position);
 
   return pixels;
 };

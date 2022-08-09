@@ -14,6 +14,8 @@ class Tracks {
     track.channel.toDestination();
 
     this.tracks.push(track);
+
+    return track;
   }
 
   removeTrack(track: Track) {
@@ -22,6 +24,8 @@ class Tracks {
     samples.forEach((sample) => {
       sample.remove();
     });
+
+    track.channel.dispose();
 
     this.tracks.splice(this.tracks.indexOf(track), 1);
   }

@@ -38,4 +38,17 @@ export const russianTranslation: UIText = {
       save: "Сохранить",
     },
   },
+  editor: {
+    dropArea: {
+      dropFile: "Перетащи сюда аудиофайл",
+      click: "Или кликни, чтобы добавить трек",
+    },
+    header: {
+      play: "Воспроизведение",
+      pause: "Пауза",
+      stop: "Стоп",
+      startRecording: "Начать запись",
+      stopRecording: "Закончить запись",
+    },
+  },
 };

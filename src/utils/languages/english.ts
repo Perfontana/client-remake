@@ -38,4 +38,17 @@ export const englishTranslation: UIText = {
       save: "Save",
     },
   },
+  editor: {
+    dropArea: {
+      dropFile: "Drop file here!",
+      click: "Or click to add a new track",
+    },
+    header: {
+      play: "Play",
+      pause: "Pause",
+      stop: "Stop",
+      startRecording: "Start recording",
+      stopRecording: "Stop recording",
+    },
+  },
 };

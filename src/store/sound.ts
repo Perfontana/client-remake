@@ -1,6 +1,7 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import { Recorder, Transport, UserMedia } from "tone";
 import tracks from "../store/tracks";
+import { operationsStack } from "./operationsStack";
 import { Sample } from "./sample";
 
 export class Sound {
@@ -30,6 +31,10 @@ export class Sound {
     Transport.stop();
   }
 
+  set position(seconds: number) {
+    Transport.seconds = seconds;
+  }
+
   get position() {
     return Transport.seconds;
   }
@@ -55,12 +60,18 @@ export class Sound {
 
     const recording = await this.recorder!.stop();
 
-    runInAction(() => {
+    runInAction(async () => {
       this.microphone?.close();
 
       this.isRecording = false;
 
-      Sample.loadFromFile(recording, tracks.tracks[0], this.startPosition);
+      const sample = await Sample.loadFromFile(
+        recording,
+        tracks.tracks[0],
+        this.startPosition
+      );
+
+      operationsStack.push(() => sample.remove());
     });
   }
 }
