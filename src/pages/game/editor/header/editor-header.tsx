@@ -9,8 +9,8 @@ import {
   BsMicMute,
 } from "react-icons/bs";
 import * as Tone from "tone";
-import { language } from "../../../store/language";
-import { sound } from "../../../store/sound";
+import { language } from "../../../../store/language";
+import { sound } from "../../../../store/sound";
 
 export const EditorHeader = observer(() => {
   const onPlayPauseClick = () => {
@@ -44,7 +44,7 @@ export const EditorHeader = observer(() => {
         <Tooltip label={language.ui.editor.header.stop}>
           <IconButton
             disabled={sound.isRecording}
-            aria-label="Stop"
+            aria-label={language.ui.editor.header.stop}
             icon={<BsStop />}
             onClick={sound.stop.bind(sound)}
           />
@@ -58,10 +58,9 @@ export const EditorHeader = observer(() => {
           }
         >
           <IconButton
-            aria-label="Start recording"
+            aria-label={language.ui.editor.header.startRecording}
             icon={sound.isRecording ? <BsMicMute /> : <BsMic />}
             onClick={async (e) => {
-              // have to call it in event handler
               await Tone.start();
 
               if (!sound.isRecording) {
@@ -75,7 +74,7 @@ export const EditorHeader = observer(() => {
         </Tooltip>
       </HStack>
       <Button>
-        Send song <Icon ml={2} as={BsArrowRight} />
+        {language.ui.editor.header.sendSong} <Icon ml={2} as={BsArrowRight} />
       </Button>
     </HStack>
   );

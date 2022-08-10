@@ -7,8 +7,8 @@ import { editor, EditorMode } from "../../../store/editor";
 import { operationsStack } from "../../../store/operationsStack";
 import { sound } from "../../../store/sound";
 import { EditorDropArea } from "./editor-drop-area";
-import { EditorHeader } from "./editor-header";
-import { EditorWorkArea } from "./editor-work-area";
+import { EditorHeader } from "./header/editor-header";
+import { EditorWorkArea } from "./track-samples/editor-work-area";
 
 const undoKey = "KeyZ";
 const cutKey = "KeyC";
@@ -64,6 +64,7 @@ export const Editor = observer(() => {
       document.removeEventListener("keyup", onKeyup);
     };
   }, [onKeydown]);
+
   return (
     <VStack minHeight={"100vh"} spacing={0} align={"stretch"} justify={"start"}>
       <EditorHeader />

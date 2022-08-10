@@ -1,6 +1,6 @@
 import { Box } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
-import { editor } from "../../../store/editor";
+import { editor } from "../../../../store/editor";
 
 export const EditorPlayPointer = observer(() => {
   return (

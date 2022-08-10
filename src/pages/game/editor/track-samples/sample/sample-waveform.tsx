@@ -1,9 +1,9 @@
 import { observer } from "mobx-react-lite";
 import { useCallback, useEffect, useRef } from "react";
-import { editor } from "../../../store/editor";
-import { Sample } from "../../../store/sample";
-import waveforms from "../../../store/waveforms";
-import { intervalFromSecondsToPixels } from "../../../utils/transformCoordinates";
+import { editor } from "../../../../../store/editor";
+import { Sample } from "../../../../../store/sample";
+import waveforms from "../../../../../store/waveforms";
+import { intervalFromSecondsToPixels } from "../../../../../utils/transformCoordinates";
 
 export const SampleWaveform = observer(({ sample }: { sample: Sample }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);

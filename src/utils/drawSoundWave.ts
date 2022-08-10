@@ -9,7 +9,7 @@ const drawSoundWave = async (
 ) => {
   const { height } = canvas;
   const centerHeight = Math.ceil(height / 2);
-  const scaleFactor = (height - margin * 2) / 2;
+  const scaleFactor = (height - margin * 2) / 1;
 
   const float32Array = audioBuffer.getChannelData(0);
   const ctx = canvas.getContext("2d");

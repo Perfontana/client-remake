@@ -1,14 +1,16 @@
 import { useDimensions, VStack } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useCallback, useEffect, useRef, useState, WheelEvent } from "react";
-import { editor } from "../../../store/editor";
-import { sound } from "../../../store/sound";
-import tracks from "../../../store/tracks";
-import { pointFromPixelsToSeconds } from "../../../utils/transformCoordinates";
-import { useMouseDrag } from "../../../utils/useMouseDrag";
-import { EditorPlayPointer } from "./editor-play-pointer";
-import { Timeline } from "./editor-timeline";
-import { Tracks } from "./tracks";
+import { editor } from "../../../../store/editor";
+import { sound } from "../../../../store/sound";
+import {
+  pointFromPixelsToSeconds,
+  pointFromSecondsToPixels,
+} from "../../../../utils/transformCoordinates";
+import { useMouseDrag } from "../../../../utils/useMouseDrag";
+import { EditorPlayPointer } from "../timeline/editor-play-pointer";
+import { Timeline } from "../timeline/editor-timeline";
+import { TrackList } from "./tracks";
 
 export const SCALE_1_SECONDS = 30;
 
@@ -19,7 +21,17 @@ export const EditorTracks = observer(() => {
   const dimentions = useDimensions(ref, true);
 
   const changeScale = (e: WheelEvent<HTMLDivElement>) => {
-    editor.set({ scale: Math.max(0.2, editor.scale + e.deltaY / 5000) });
+    const deltaScale = e.deltaY / 5000;
+    const scale = Math.max(0.2, editor.scale + deltaScale);
+
+    const position = pointFromSecondsToPixels(
+      editor.timePosition,
+      editor.width,
+      scale,
+      0
+    );
+
+    editor.set({ scale, position });
   };
 
   const changePosition = useCallback(
@@ -76,7 +88,7 @@ export const EditorTracks = observer(() => {
     >
       <EditorPlayPointer />
       <Timeline />
-      <Tracks />
+      <TrackList />
     </VStack>
   );
 });

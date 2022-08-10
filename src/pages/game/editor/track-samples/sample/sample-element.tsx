@@ -1,31 +1,46 @@
 import { HStack } from "@chakra-ui/react";
 import { runInAction } from "mobx";
 import { observer } from "mobx-react-lite";
-import { MouseEvent, useEffect } from "react";
+import { MouseEvent, useEffect, useMemo } from "react";
 import { useDragDropManager, useDrag } from "react-dnd";
 import { getEmptyImage } from "react-dnd-html5-backend";
-import { editor, EditorMode } from "../../../store/editor";
-import { Sample } from "../../../store/sample";
+import { editor, EditorMode } from "../../../../../store/editor";
+import { Sample } from "../../../../../store/sample";
 import {
   intervalFromSecondsToPixels,
   pointFromSecondsToPixels,
   pointFromPixelsToSeconds,
-} from "../../../utils/transformCoordinates";
+} from "../../../../../utils/transformCoordinates";
 import { SampleResizer } from "./sample-resizer";
 import { SampleWaveform } from "./sample-waveform";
 
+const styleBase = {
+  position: "absolute",
+  height: "100%",
+  backgroundColor: "#0000008e",
+  borderRadius: "5px",
+};
+
 export const SampleElement = observer(({ sample }: { sample: Sample }) => {
-  const pixelWidth = intervalFromSecondsToPixels(
-    sample.length / sample.speed,
-    editor.width,
-    editor.scale
+  const pixelWidth = useMemo(
+    () =>
+      intervalFromSecondsToPixels(
+        sample.length / sample.speed,
+        editor.width,
+        editor.scale
+      ),
+    [editor.scale, editor.width, sample.length, sample.speed]
   );
 
-  const pixelPosition = pointFromSecondsToPixels(
-    sample.position,
-    editor.width,
-    editor.scale,
-    editor.position
+  const pixelPosition = useMemo(
+    () =>
+      pointFromSecondsToPixels(
+        sample.position,
+        editor.width,
+        editor.scale,
+        editor.position
+      ),
+    [editor.scale, editor.width, editor.position, sample.position]
   );
 
   const dragDropManager = useDragDropManager();
@@ -92,24 +107,22 @@ export const SampleElement = observer(({ sample }: { sample: Sample }) => {
 
   return (
     <>
-      <HStack
-        spacing={0}
+      <div
         ref={dragRef}
-        position={"absolute"}
-        left={`${pixelPosition}px`}
-        h={"full"}
-        w={`${pixelWidth}px`}
-        bg={"blackAlpha.600"}
-        cursor={editor.mode === EditorMode.Cut ? "col-resize" : "inherit"}
-        onClick={cutSample}
-        borderRadius="5px"
-        _hover={{
-          boxShadow: "0 0 2px #ffffff",
+        style={{
+          position: "absolute",
+          left: `${pixelPosition}px`,
+          height: "100%",
+          width: `${pixelWidth}px`,
+          backgroundColor: "#0000008e",
+          cursor: editor.mode === EditorMode.Cut ? "col-resize" : "inherit",
+          borderRadius: "5px",
         }}
+        onClick={cutSample}
       >
         <SampleResizer sample={sample} />
         <SampleWaveform sample={sample} />
-      </HStack>
+      </div>
     </>
   );
 });

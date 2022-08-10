@@ -6,7 +6,7 @@ import { language } from "../../../store/language";
 import { operationsStack } from "../../../store/operationsStack";
 import { Sample } from "../../../store/sample";
 import tracks from "../../../store/tracks";
-import { TRACK_HEIGHT } from "./editor-work-area";
+import { TRACK_HEIGHT } from "./track-samples/editor-work-area";
 
 export const EditorDropArea = observer(() => {
   const addTrack = () => tracks.addTrack();

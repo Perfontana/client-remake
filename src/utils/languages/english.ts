@@ -49,6 +49,14 @@ export const englishTranslation: UIText = {
       stop: "Stop",
       startRecording: "Start recording",
       stopRecording: "Stop recording",
+      sendSong: "Send song",
+    },
+    trackOptions: {
+      mute: "Mute track",
+      pan: "Pan",
+      remove: "Remove track",
+      solo: "Toggle solo mode",
+      volume: "Volume",
     },
   },
 };

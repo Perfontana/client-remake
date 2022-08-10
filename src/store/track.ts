@@ -1,7 +1,7 @@
 import { makeAutoObservable } from "mobx";
 import { nanoid } from "nanoid";
 import { Channel } from "tone";
-import { Sample } from "./Sample";
+import { Sample } from "./sample";
 
 export class Track {
   id = nanoid(10);

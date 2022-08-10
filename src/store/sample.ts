@@ -57,8 +57,13 @@ export class Sample {
     this.length = options.length ?? this.length;
     this.speed = options.speed ?? this.speed;
 
-    this.player.unsync().sync().start(this.position, this.offset, this.length);
+    // console.log("this.length", this.length);
+    // console.log("this.speed", this.speed);
+    // console.log("this.position", this.position);
+    // console.log("this.offset", this.offset);
+
     this.player.playbackRate = this.speed;
+    this.player.unsync().sync().start(this.position, this.offset, this.length);
   }
 
   copy(): Sample {
@@ -94,11 +99,14 @@ export class Sample {
 
     this.track.addSample(copy);
 
-    const cutSampleLength = cutPosition - this.position;
+    const cutSampleLength = (cutPosition - this.position) * this.speed;
+
+    console.log(cutPosition, this.position, cutSampleLength);
 
     this.set({ length: cutSampleLength });
     copy.set({
       position: cutPosition,
+      speed: this.speed,
       offset: copy.offset + cutSampleLength,
       length: copy.length - cutSampleLength,
     });

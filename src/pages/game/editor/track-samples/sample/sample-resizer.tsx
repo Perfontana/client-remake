@@ -1,10 +1,10 @@
 import { Box } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useState } from "react";
-import { editor, EditorMode } from "../../../store/editor";
-import { Sample } from "../../../store/sample";
-import { intervalFromPixelsToSeconds } from "../../../utils/transformCoordinates";
-import { useMouseDrag } from "../../../utils/useMouseDrag";
+import { editor, EditorMode } from "../../../../../store/editor";
+import { Sample } from "../../../../../store/sample";
+import { intervalFromPixelsToSeconds } from "../../../../../utils/transformCoordinates";
+import { useMouseDrag } from "../../../../../utils/useMouseDrag";
 
 export const SampleResizer = observer(({ sample }: { sample: Sample }) => {
   const [startValues, setStartValues] = useState({
@@ -22,11 +22,18 @@ export const SampleResizer = observer(({ sample }: { sample: Sample }) => {
         editor.scale
       );
 
-      const offset = Math.max(0, startValues.offset + deltaSeconds);
+      const offset = Math.max(
+        0,
+        startValues.offset + deltaSeconds * startValues.speed
+      );
       const position =
         offset === 0 ? sample.position : startValues.position + deltaSeconds;
       const length =
-        offset === 0 ? sample.length : startValues.length - deltaSeconds;
+        offset === 0
+          ? sample.length
+          : startValues.length - deltaSeconds * startValues.speed;
+
+      console.log(startValues.speed);
 
       if (length < 0.2) return;
 
@@ -46,8 +53,6 @@ export const SampleResizer = observer(({ sample }: { sample: Sample }) => {
       const length = startValues.length / startValues.speed - deltaSeconds;
       const speed = startValues.length / length;
 
-      console.log(startValues.length / length);
-
       sample.set({
         speed,
         position,
@@ -56,17 +61,33 @@ export const SampleResizer = observer(({ sample }: { sample: Sample }) => {
   };
 
   const onLengthChange = ({ x }: any) => {
-    const length = Math.min(
-      startValues.length -
-        intervalFromPixelsToSeconds(x, editor.width, editor.scale),
-      sample.player.buffer.duration - sample.offset
-    );
+    if (editor.mode === EditorMode.None) {
+      const length = Math.min(
+        startValues.length -
+          intervalFromPixelsToSeconds(x, editor.width, editor.scale) *
+            startValues.speed,
+        sample.player.buffer.duration - sample.offset
+      );
 
-    if (length < 0.2) return;
+      if (length < 0.2) return;
 
-    sample.set({
-      length,
-    });
+      sample.set({
+        length,
+      });
+    } else if (editor.mode === EditorMode.Stretch) {
+      const deltaSeconds = -intervalFromPixelsToSeconds(
+        x,
+        editor.width,
+        editor.scale
+      );
+
+      const length = startValues.length / startValues.speed + deltaSeconds;
+      const speed = startValues.length / length;
+
+      sample.set({
+        speed,
+      });
+    }
   };
 
   const onStart = () => {

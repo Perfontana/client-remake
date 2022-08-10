@@ -1,5 +1,5 @@
 import { makeAutoObservable } from "mobx";
-import { SCALE_1_SECONDS } from "../pages/game/editor/editor-tracks";
+import { SCALE_1_SECONDS } from "../pages/game/editor/track-samples/editor-tracks";
 import { pointFromSecondsToPixels } from "../utils/transformCoordinates";
 
 export enum EditorMode {

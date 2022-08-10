@@ -3,10 +3,10 @@ import { runInAction } from "mobx";
 import { observer } from "mobx-react-lite";
 import { useDrop } from "react-dnd";
 import { NativeTypes } from "react-dnd-html5-backend";
-import { editor } from "../../../store/editor";
-import { Sample } from "../../../store/sample";
-import { Track } from "../../../store/track";
-import { pointFromPixelsToSeconds } from "../../../utils/transformCoordinates";
+import { editor } from "../../../../store/editor";
+import { Sample } from "../../../../store/sample";
+import { Track } from "../../../../store/track";
+import { pointFromPixelsToSeconds } from "../../../../utils/transformCoordinates";
 import { TRACK_HEIGHT } from "./editor-work-area";
 import { TrackSamples } from "./track-samples";
 

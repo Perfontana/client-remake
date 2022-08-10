@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
-import { Track } from "../../../store/track";
-import { SampleElement } from "./sample-element";
+import { Track } from "../../../../store/track";
+import { SampleElement } from "./sample/sample-element";
 
 export const TrackSamples = observer(({ track }: { track: Track }) => {
   return (

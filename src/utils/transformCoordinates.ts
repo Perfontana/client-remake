@@ -1,4 +1,4 @@
-import { SCALE_1_SECONDS } from "../pages/game/editor/editor-tracks";
+import { SCALE_1_SECONDS } from "../pages/game/editor/track-samples/editor-tracks";
 
 export const pointFromPixelsToSeconds = (
   pixels: number,

@@ -62,6 +62,14 @@ export interface UIText {
       stop: string;
       startRecording: string;
       stopRecording: string;
+      sendSong: string;
+    };
+    trackOptions: {
+      volume: string;
+      pan: string;
+      mute: string;
+      solo: string;
+      remove: string;
     };
   };
 }

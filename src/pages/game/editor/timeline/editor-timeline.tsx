@@ -1,6 +1,6 @@
 import { HStack } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
-import { Marks } from "../../../components/marks";
+import { Marks } from "./marks";
 
 export const TIMELINE_HEIGHT = 25;
 

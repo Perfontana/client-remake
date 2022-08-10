@@ -1,8 +1,8 @@
 import { toJS } from "mobx";
 import { observer } from "mobx-react-lite";
 import { useEffect } from "react";
-import { editor } from "../store/editor";
-import { marks } from "../store/editorMarks";
+import { editor } from "../../../../store/editor";
+import { marks } from "../../../../store/editorMarks";
 import { Mark } from "./mark";
 
 export const Marks = observer(() => {

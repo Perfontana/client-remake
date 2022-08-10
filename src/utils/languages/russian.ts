@@ -49,6 +49,14 @@ export const russianTranslation: UIText = {
       stop: "Стоп",
       startRecording: "Начать запись",
       stopRecording: "Закончить запись",
+      sendSong: "Отправить трек",
+    },
+    trackOptions: {
+      mute: "Выключить трек",
+      pan: "Баланс",
+      remove: "Удалить трек",
+      solo: "Переключить режим соло",
+      volume: "Громкость",
     },
   },
 };
