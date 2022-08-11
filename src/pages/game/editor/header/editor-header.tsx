@@ -1,4 +1,11 @@
-import { Button, HStack, Icon, IconButton, Tooltip } from "@chakra-ui/react";
+import {
+  Button,
+  HStack,
+  Icon,
+  IconButton,
+  Text,
+  Tooltip,
+} from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import {
   BsPlay,
@@ -9,8 +16,10 @@ import {
   BsMicMute,
 } from "react-icons/bs";
 import * as Tone from "tone";
+import game from "../../../../store/game";
 import { language } from "../../../../store/language";
 import { sound } from "../../../../store/sound";
+import { EditorModeSwitch } from "./editor-mode-switch";
 
 export const EditorHeader = observer(() => {
   const onPlayPauseClick = () => {
@@ -73,6 +82,10 @@ export const EditorHeader = observer(() => {
           />
         </Tooltip>
       </HStack>
+      <EditorModeSwitch />
+
+      <Text>{game.timeLeft}s</Text>
+
       <Button>
         {language.ui.editor.header.sendSong} <Icon ml={2} as={BsArrowRight} />
       </Button>

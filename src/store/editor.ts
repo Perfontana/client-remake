@@ -6,6 +6,7 @@ export enum EditorMode {
   None = "none",
   Cut = "cut",
   Stretch = "stretch",
+  Delete = "delete",
 }
 
 export class EditorStore {

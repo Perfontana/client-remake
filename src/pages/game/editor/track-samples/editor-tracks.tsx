@@ -3,6 +3,7 @@ import { observer } from "mobx-react-lite";
 import { useCallback, useEffect, useRef, useState, WheelEvent } from "react";
 import { editor } from "../../../../store/editor";
 import { sound } from "../../../../store/sound";
+import tracks from "../../../../store/tracks";
 import {
   pointFromPixelsToSeconds,
   pointFromSecondsToPixels,

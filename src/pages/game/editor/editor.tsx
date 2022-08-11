@@ -9,11 +9,10 @@ import { sound } from "../../../store/sound";
 import { EditorDropArea } from "./editor-drop-area";
 import { EditorHeader } from "./header/editor-header";
 import { EditorWorkArea } from "./track-samples/editor-work-area";
-
-const undoKey = "KeyZ";
-const cutKey = "KeyC";
-const stretchKey = "KeyS";
-const playPauseKey = "Space";
+import { useHotkeys } from "react-hotkeys-hook";
+import { useEditorModeHotkey } from "../../../utils/useEditorModeHotkey";
+import game from "../../../store/game";
+import { getCurrentTime } from "../../../api/rooms";
 
 export const Editor = observer(() => {
   useEffect(() => {
@@ -24,46 +23,29 @@ export const Editor = observer(() => {
     return () => clearInterval(interval);
   }, []);
 
-  const onKeydown = (e: KeyboardEvent) => {
-    if (e.code === undoKey) {
-      if (e.ctrlKey) {
-        operationsStack.undo();
-      }
-    }
-
-    if (e.code === cutKey) {
-      editor.set({ mode: EditorMode.Cut });
-    }
-
-    if (e.code === playPauseKey) {
-      Tone.start();
-      sound.isPaused ? sound.play() : sound.pause();
-    }
-
-    if (e.code === stretchKey) {
-      editor.set({ mode: EditorMode.Stretch });
-    }
-  };
-
-  const onKeyup = (e: KeyboardEvent) => {
-    if (e.code === cutKey) {
-      editor.set({ mode: EditorMode.None });
-    }
-
-    if (e.code === stretchKey) {
-      editor.set({ mode: EditorMode.None });
-    }
+  const onNewRound = async () => {
+    game.loadRoundSong();
+    const { data } = await getCurrentTime();
+    game.startTimer(data.time);
   };
 
   useEffect(() => {
-    document.addEventListener("keydown", onKeydown);
-    document.addEventListener("keyup", onKeyup);
+    onNewRound();
+  }, [game.currentRound]);
 
-    return () => {
-      document.removeEventListener("keydown", onKeydown);
-      document.removeEventListener("keyup", onKeyup);
-    };
-  }, [onKeydown]);
+  useEditorModeHotkey("esc", EditorMode.None);
+  useEditorModeHotkey("c", EditorMode.Cut);
+  useEditorModeHotkey("s", EditorMode.Stretch);
+  useEditorModeHotkey("d", EditorMode.Delete);
+
+  useHotkeys(
+    " ",
+    () => {
+      Tone.start();
+      sound.isPaused ? sound.play() : sound.pause();
+    },
+    []
+  );
 
   return (
     <VStack minHeight={"100vh"} spacing={0} align={"stretch"} justify={"start"}>

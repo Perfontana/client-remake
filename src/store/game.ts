@@ -4,6 +4,8 @@ import { getRoom, getSong, startGame } from "../api/rooms";
 import { SocketClient } from "../socket/socket-types";
 import Player from "../types/Player";
 import { auth } from "./auth";
+import { Sample } from "./sample";
+import tracks from "./tracks";
 
 class Game {
   loading: boolean = false;
@@ -16,7 +18,7 @@ class Game {
   code: string = "";
   players: Player[] = [];
   isEnded: boolean = false;
-  currentTime: number = 0;
+  timeLeft: number = 0;
   rounds: {
     player: string;
     song: string;
@@ -84,17 +86,9 @@ class Game {
 
     if (response.url === "FIRST_ROUND") return;
 
-    // tracks.addTrack();
+    tracks.addTrack();
 
-    // const sample = await Sample.loadFromUrl(
-    //   response.url,
-    //   response.url,
-    //   tracks.tracks[0]
-    // );
-
-    // if (!sample) {
-    //   message.warning("Error loading previous version of the song");
-    // }
+    await Sample.loadFromUrl(response.url, response.url, tracks.tracks[0]);
   }
 
   addPlayer(player: Player) {
@@ -119,10 +113,12 @@ class Game {
 
   private timer: any = null;
   startTimer(elapsed: number) {
-    this.currentTime = elapsed;
+    this.endTimer();
+
+    this.timeLeft = this.roundTime - elapsed;
     this.timer = setInterval(
       action(() => {
-        this.currentTime += 1;
+        this.timeLeft -= 1;
       }),
       1000
     );
@@ -130,7 +126,7 @@ class Game {
 
   endTimer() {
     if (this.timer) clearInterval(this.timer);
-    this.currentTime = 0;
+    this.timeLeft = this.roundTime;
   }
 }
 

@@ -26,7 +26,11 @@ export const SampleWaveform = observer(({ sample }: { sample: Sample }) => {
 
   return (
     <canvas
-      style={{ width: "100%", height: "100%" }}
+      style={{
+        width: "100%",
+        height: "100%",
+        position: "absolute",
+      }}
       className="sample-waveform"
       ref={canvasRef}
     ></canvas>

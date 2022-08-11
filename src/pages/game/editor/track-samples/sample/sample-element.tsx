@@ -1,4 +1,4 @@
-import { HStack } from "@chakra-ui/react";
+import { HStack, Text } from "@chakra-ui/react";
 import { runInAction } from "mobx";
 import { observer } from "mobx-react-lite";
 import { MouseEvent, useEffect, useMemo } from "react";
@@ -89,16 +89,46 @@ export const SampleElement = observer(({ sample }: { sample: Sample }) => {
     []
   );
 
-  const cutSample = (e: MouseEvent<HTMLDivElement>) => {
-    if (editor.mode === EditorMode.Cut)
-      sample.cut(
-        pointFromPixelsToSeconds(
-          e.clientX - editor.leftOffset,
-          editor.width,
-          editor.scale,
-          editor.position
-        )
-      );
+  const onSampleClick = (e: MouseEvent<HTMLDivElement>) => {
+    switch (editor.mode) {
+      case EditorMode.Cut: {
+        sample.cut(
+          pointFromPixelsToSeconds(
+            e.clientX - editor.leftOffset,
+            editor.width,
+            editor.scale,
+            editor.position
+          )
+        );
+
+        break;
+      }
+      case EditorMode.Delete: {
+        sample.remove();
+
+        break;
+      }
+    }
+  };
+
+  const getCursor = () => {
+    switch (editor.mode) {
+      case EditorMode.Cut: {
+        return "col-resize";
+      }
+    }
+
+    return "inherit";
+  };
+
+  const getBorder = () => {
+    switch (editor.mode) {
+      case EditorMode.Delete: {
+        return "1px solid red";
+      }
+    }
+
+    return "none";
   };
 
   useEffect(() => {
@@ -115,13 +145,21 @@ export const SampleElement = observer(({ sample }: { sample: Sample }) => {
           height: "100%",
           width: `${pixelWidth}px`,
           backgroundColor: "#0000008e",
-          cursor: editor.mode === EditorMode.Cut ? "col-resize" : "inherit",
+          cursor: getCursor(),
+          border: getBorder(),
           borderRadius: "5px",
+          color: "#d4d4d4",
+          display: "flex",
+          overflow: "hidden",
         }}
-        onClick={cutSample}
+        onClick={onSampleClick}
       >
         <SampleResizer sample={sample} />
         <SampleWaveform sample={sample} />
+
+        <Text ml={"5px"} whiteSpace="nowrap" fontSize={"10px"}>
+          {sample.name}
+        </Text>
       </div>
     </>
   );

@@ -122,6 +122,7 @@ export const SampleResizer = observer(({ sample }: { sample: Sample }) => {
         onClick={(e) => e.stopPropagation()}
         position={"absolute"}
         left={0}
+        zIndex={1}
         h={"full"}
         w={"5px"}
         cursor="ew-resize"
@@ -136,6 +137,7 @@ export const SampleResizer = observer(({ sample }: { sample: Sample }) => {
         onClick={(e) => e.stopPropagation()}
         position={"absolute"}
         right={0}
+        zIndex={1}
         h={"full"}
         w={"5px"}
         cursor="ew-resize"

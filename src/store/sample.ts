@@ -40,6 +40,8 @@ export class Sample {
     this.length = length ?? this.fullLength - Time(offset).toSeconds();
 
     makeAutoObservable(this);
+
+    console.log(this.name);
   }
 
   get channel(): Channel {
@@ -63,6 +65,10 @@ export class Sample {
     // console.log("this.offset", this.offset);
 
     this.player.playbackRate = this.speed;
+    this.resync();
+  }
+
+  resync() {
     this.player.unsync().sync().start(this.position, this.offset, this.length);
   }
 
