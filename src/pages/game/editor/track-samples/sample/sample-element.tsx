@@ -1,5 +1,5 @@
 import { HStack, Text } from "@chakra-ui/react";
-import { runInAction } from "mobx";
+import { runInAction, toJS } from "mobx";
 import { observer } from "mobx-react-lite";
 import { MouseEvent, useEffect, useMemo } from "react";
 import { useDragDropManager, useDrag } from "react-dnd";
@@ -22,14 +22,10 @@ const styleBase = {
 };
 
 export const SampleElement = observer(({ sample }: { sample: Sample }) => {
-  const pixelWidth = useMemo(
-    () =>
-      intervalFromSecondsToPixels(
-        sample.length / sample.speed,
-        editor.width,
-        editor.scale
-      ),
-    [editor.scale, editor.width, sample.length, sample.speed]
+  const pixelWidth = intervalFromSecondsToPixels(
+    sample.length / sample.speed,
+    editor.width,
+    editor.scale
   );
 
   const pixelPosition = useMemo(
@@ -42,6 +38,8 @@ export const SampleElement = observer(({ sample }: { sample: Sample }) => {
       ),
     [editor.scale, editor.width, editor.position, sample.position]
   );
+
+  console.log(toJS(sample));
 
   const dragDropManager = useDragDropManager();
   const monitor = dragDropManager.getMonitor();

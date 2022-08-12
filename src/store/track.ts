@@ -13,8 +13,14 @@ export class Track {
   solo: boolean = false;
   mute: boolean = false;
 
+  isBlocked = false;
+
   constructor() {
     makeAutoObservable(this);
+  }
+
+  setIsBlocked(isBlocked: boolean) {
+    this.isBlocked = isBlocked;
   }
 
   setVolume(value: number) {

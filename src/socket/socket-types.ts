@@ -6,7 +6,7 @@ export interface ServerToClientEvents {
   "player-connected": (player: Player) => void;
   "player-updated": (player: Player) => void;
   "player-disconnected": (player: Player) => void;
-  "player-ready": (player: Player) => void;
+  "player-ready": (player: Pick<Player, "name">) => void;
   "game-ended": () => void;
   "round-ended": () => void;
   "round-timer-ended": () => void;

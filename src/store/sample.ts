@@ -37,6 +37,7 @@ export class Sample {
     this.position = position;
     this.offset = offset;
     this.fullLength = buffer.duration;
+    console.log(buffer.duration);
     this.length = length ?? this.fullLength - Time(offset).toSeconds();
 
     makeAutoObservable(this);
@@ -134,6 +135,8 @@ export class Sample {
     position = 0
   ) {
     const buffer = await audioBuffers.getBuffer(name, url);
+
+    console.log("Created", buffer);
     if (!buffer) return;
 
     const newSample = new Sample(buffer, track, name, position);

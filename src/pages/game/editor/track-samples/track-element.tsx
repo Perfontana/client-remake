@@ -55,7 +55,6 @@ export const TrackElement = observer(({ track }: TrackElementProps) => {
     <HStack
       ref={dropContainer}
       spacing={0}
-      key={track.id}
       position={"relative"}
       h={TRACK_HEIGHT}
       bg="gray.400"

@@ -62,10 +62,12 @@ export const Lobby = observer(({}: LobbyProps) => {
     }
   };
 
+  const isAPlayer = auth.token && id === auth.room;
+
   return (
     <>
-      {!auth.token ? (
-        <JoinRoomModal isOpen={!auth.token} roomCode={id!} />
+      {!isAPlayer ? (
+        <JoinRoomModal isOpen={!isAPlayer} roomCode={id!} />
       ) : (
         <VStack
           p={10}

@@ -7,6 +7,7 @@ import {
   Tooltip,
 } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
+import { useCallback } from "react";
 import {
   BsPlay,
   BsPause,
@@ -16,12 +17,20 @@ import {
   BsMicMute,
 } from "react-icons/bs";
 import * as Tone from "tone";
+import { sendSong } from "../../../../api/rooms";
 import game from "../../../../store/game";
 import { language } from "../../../../store/language";
 import { sound } from "../../../../store/sound";
+import { renderAudio } from "../../../../utils/renderAudio";
 import { EditorModeSwitch } from "./editor-mode-switch";
 
 export const EditorHeader = observer(() => {
+  const sendRoundSong = useCallback(async () => {
+    const data = await renderAudio();
+
+    sendSong(data);
+  }, []);
+
   const onPlayPauseClick = () => {
     if (sound.isPaused) {
       Tone.start();
@@ -86,7 +95,7 @@ export const EditorHeader = observer(() => {
 
       <Text>{game.timeLeft}s</Text>
 
-      <Button>
+      <Button onClick={sendRoundSong}>
         {language.ui.editor.header.sendSong} <Icon ml={2} as={BsArrowRight} />
       </Button>
     </HStack>

@@ -1,23 +1,27 @@
 import { useToast } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { PropsWithChildren, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { useGameConnection } from "../../socket/use-game-connection";
+import { useNavigate, useParams } from "react-router-dom";
+import { useSocketHandlers } from "../../socket/use-socket-handlers";
 import { auth } from "../../store/auth";
 import game from "../../store/game";
+import { socketStore } from "../../store/socket";
 
 export interface GameProps {}
 
 export const Game = observer(({ children }: GameProps & PropsWithChildren) => {
   const toast = useToast();
+  const { id } = useParams();
   const navigate = useNavigate();
 
   useEffect(() => {
-    game.loadRoom();
+    if (id === auth.room) game.loadRoom();
+
+    socketStore.connect(auth.token);
   }, [auth.token]);
 
-  const io = useGameConnection({
-    token: auth.token,
+  useSocketHandlers({
+    io: socketStore.io,
     handlers: {
       onConnect() {
         toast({ title: "You are online!", status: "success" });
@@ -26,6 +30,7 @@ export const Game = observer(({ children }: GameProps & PropsWithChildren) => {
         toast({ title: "You've been disconnected", status: "error" });
       },
       onNewPlayerConnected(player) {
+        console.log("new player!", player);
         game.addPlayer(player);
       },
       onPlayerDisconnected(player) {
@@ -57,17 +62,11 @@ export const Game = observer(({ children }: GameProps & PropsWithChildren) => {
   });
 
   useEffect(() => {
-    if (io) io.open();
-
-    return () => {
-      if (io) io.close();
-    };
-  }, [io]);
-
-  if (game.isStarted) {
-    if (game.isEnded) navigate(`/room/${game.code}/results`);
-    else navigate(`/room/${game.code}/editor`);
-  }
+    if (game.isStarted) {
+      if (game.isEnded) navigate(`/room/${game.code}/results`);
+      else navigate(`/room/${game.code}/editor`);
+    }
+  }, []);
 
   return <>{children}</>;
 });

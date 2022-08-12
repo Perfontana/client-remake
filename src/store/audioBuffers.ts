@@ -1,5 +1,5 @@
 import { makeAutoObservable } from "mobx";
-import { ToneAudioBuffer } from "tone";
+import { Buffer, ToneAudioBuffer } from "tone";
 
 export interface BufferInfo {
   buffer: ToneAudioBuffer;
@@ -27,25 +27,33 @@ export class AudioBuffers {
         (bufferInfo) => bufferInfo.name === name
       );
 
-      if (!foundBuffer) {
-        if (!url) {
-          resolve(null);
+      console.log("foundBuffer", foundBuffer);
+
+      if (foundBuffer) {
+        if (!foundBuffer.buffer.loaded) {
+          foundBuffer.buffer.onload = resolve;
           return;
         }
 
-        const audioBuffer = new ToneAudioBuffer(
-          url,
-          (buffer: ToneAudioBuffer | undefined) => {
-            resolve(buffer);
-          }
-        );
-        foundBuffer = { buffer: audioBuffer, name, url };
-        this._buffers.push(foundBuffer);
-
+        resolve(foundBuffer.buffer);
         return;
       }
 
-      resolve(foundBuffer.buffer);
+      if (!url) {
+        resolve(null);
+        return;
+      }
+
+      const audioBuffer = new ToneAudioBuffer(
+        url,
+        (buffer: ToneAudioBuffer | undefined) => {
+          console.log("LOaded");
+          resolve(buffer);
+        }
+      );
+
+      foundBuffer = { buffer: audioBuffer, name, url };
+      this._buffers.push(foundBuffer);
     });
   }
 }

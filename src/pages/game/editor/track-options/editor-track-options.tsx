@@ -1,12 +1,10 @@
-import { HStack, Button, Icon, Text, VStack, Tooltip } from "@chakra-ui/react";
+import { Button, HStack, Icon, Tooltip, VStack } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { MdClose } from "react-icons/md";
 import Knob from "../../../../components/knob";
 import { language } from "../../../../store/language";
-import { operationsStack } from "../../../../store/operationsStack";
 import { Track } from "../../../../store/track";
 import tracks from "../../../../store/tracks";
-import { TIMELINE_HEIGHT } from "../timeline/editor-timeline";
 import { TRACK_HEIGHT } from "../track-samples/editor-work-area";
 
 export interface EditorTrackOptions {
@@ -16,6 +14,7 @@ export interface EditorTrackOptions {
 export const EditorTrackOptions = observer(({ track }: EditorTrackOptions) => {
   return (
     <HStack
+      visibility={track.isBlocked ? "hidden" : "visible"}
       _notFirst={{ boxShadow: "0 0 5px #ffffff2c" }}
       pl={2}
       spacing={2}

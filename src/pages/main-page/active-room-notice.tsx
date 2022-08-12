@@ -4,6 +4,7 @@ import {
   Box,
   Button,
   HStack,
+  Icon,
   Spinner,
   Text,
   useBoolean,
@@ -11,6 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useEffect, useState } from "react";
+import { BsExclamation } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import { isErrorResponse } from "../../api/config";
 import { getRoom, removePlayer } from "../../api/rooms";
@@ -22,6 +24,7 @@ import Room from "../../types/Room";
 
 export const ActiveRoomNotice = observer(() => {
   const [isRoomLoading, { on, off }] = useBoolean(true);
+  const [isErrored, { on: errorOn, off: errorOff }] = useBoolean(true);
 
   const [room, setRoom] = useState<Room | null>(null);
 
@@ -30,17 +33,21 @@ export const ActiveRoomNotice = observer(() => {
   const loadRoom = async () => {
     on();
 
-    const { data } = await getRoom();
+    const response = await getRoom();
 
-    if (isErrorResponse(data)) {
-      if (data.statusCode === 401) auth.clear();
+    if (isErrorResponse(response.data)) {
+      if (response.data.statusCode === 401) auth.clear();
+
+      off();
+      errorOn();
 
       return;
     }
 
-    setRoom(data);
+    setRoom(response.data);
 
     off();
+    errorOff();
   };
 
   const leaveRoom = async () => {
@@ -57,6 +64,11 @@ export const ActiveRoomNotice = observer(() => {
     <Box bg="white" p={6} rounded="md" w={80}>
       {isRoomLoading ? (
         <Spinner />
+      ) : isErrored ? (
+        <HStack textAlign={"center"}>
+          <Icon color={"red"} fontSize={"40px"} as={BsExclamation} />
+          <Text>Can't load room data</Text>
+        </HStack>
       ) : (
         <VStack spacing={5} align="stretch">
           <Text fontSize={20} borderBottom="1px dashed #9b9b9b">

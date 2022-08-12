@@ -26,8 +26,12 @@ axios.interceptors.request.use((config) => {
 axios.interceptors.response.use(
   (config) => config,
   (error) => {
-    if (error.response) return error.response;
+    if (error.response && error.response.data) {
+      return error.response;
+    }
 
-    return { error: error.name, message: error.message, statusCode: 0 };
+    return {
+      data: { error: error.name, message: error.message, statusCode: 0 },
+    };
   }
 );

@@ -1,11 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Player from "../types/Player";
 import Room from "../types/Room";
-import createSocket from "./create-socket";
 import { SocketClient } from "./socket-types";
 
 export interface UseGameConnectionConfig {
-  token?: string;
+  io: SocketClient | null;
   handlers: {
     onConnect?: () => any;
     onDisconnect?: () => any;
@@ -15,6 +14,7 @@ export interface UseGameConnectionConfig {
     onRoundTimerEnded?: () => any;
     onRoomUpdated?: (room: Partial<Room>) => any;
     onRoundStarted?: (message: { currentRound: number }) => any;
+    onPlayerReady?: (player: Pick<Player, "name">) => any;
     onRoundEnded?: () => any;
     onGameEnded?: () => any;
   };
@@ -36,8 +36,8 @@ const useHandlerUpdate = (
   }, [io, handler]);
 };
 
-export const useGameConnection = ({
-  token,
+export const useSocketHandlers = ({
+  io,
   handlers: {
     onConnect,
     onDisconnect,
@@ -49,20 +49,9 @@ export const useGameConnection = ({
     onRoundStarted,
     onRoundEnded,
     onGameEnded,
+    onPlayerReady,
   },
 }: UseGameConnectionConfig) => {
-  const [io, setIo] = useState(() => (token ? createSocket(token) : null));
-
-  useEffect(() => {
-    if (!token) return;
-
-    setIo(createSocket(token));
-
-    () => {
-      io?.disconnect();
-    };
-  }, [token]);
-
   useHandlerUpdate(io, "connect", onConnect);
   useHandlerUpdate(io, "disconnect", onDisconnect);
   useHandlerUpdate(io, "player-connected", onNewPlayerConnected);
@@ -73,6 +62,5 @@ export const useGameConnection = ({
   useHandlerUpdate(io, "round-started", onRoundStarted);
   useHandlerUpdate(io, "round-ended", onRoundEnded);
   useHandlerUpdate(io, "game-ended", onGameEnded);
-
-  return io;
+  useHandlerUpdate(io, "player-ready", onPlayerReady);
 };

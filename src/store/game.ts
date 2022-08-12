@@ -77,20 +77,6 @@ class Game {
     this.endTimer();
   }
 
-  async loadRoundSong() {
-    const { data: response } = await getSong();
-
-    if (isErrorResponse(response)) {
-      return;
-    }
-
-    if (response.url === "FIRST_ROUND") return;
-
-    tracks.addTrack();
-
-    await Sample.loadFromUrl(response.url, response.url, tracks.tracks[0]);
-  }
-
   addPlayer(player: Player) {
     this.players.push(player);
   }

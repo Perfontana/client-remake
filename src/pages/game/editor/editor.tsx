@@ -1,18 +1,24 @@
-import { Box, VStack } from "@chakra-ui/react";
+import { VStack } from "@chakra-ui/react";
+import { toJS } from "mobx";
 import { observer } from "mobx-react-lite";
-import { KeyboardEvent, useEffect } from "react";
-import { Transport } from "tone";
+import { useEffect } from "react";
+import { useHotkeys } from "react-hotkeys-hook";
 import * as Tone from "tone";
+import { Transport } from "tone";
+import { isErrorResponse } from "../../../api/config";
+import { getCurrentTime, getSong } from "../../../api/rooms";
+import { useSocketHandlers } from "../../../socket/use-socket-handlers";
 import { editor, EditorMode } from "../../../store/editor";
-import { operationsStack } from "../../../store/operationsStack";
+import game from "../../../store/game";
+import { Sample } from "../../../store/sample";
+import { socketStore } from "../../../store/socket";
 import { sound } from "../../../store/sound";
+import tracks from "../../../store/tracks";
+import { useEditorModeHotkey } from "../../../utils/useEditorModeHotkey";
+import { BottomMenu } from "./bottom-menu/bottom-menu";
 import { EditorDropArea } from "./editor-drop-area";
 import { EditorHeader } from "./header/editor-header";
 import { EditorWorkArea } from "./track-samples/editor-work-area";
-import { useHotkeys } from "react-hotkeys-hook";
-import { useEditorModeHotkey } from "../../../utils/useEditorModeHotkey";
-import game from "../../../store/game";
-import { getCurrentTime } from "../../../api/rooms";
 
 export const Editor = observer(() => {
   useEffect(() => {
@@ -23,15 +29,41 @@ export const Editor = observer(() => {
     return () => clearInterval(interval);
   }, []);
 
-  const onNewRound = async () => {
-    game.loadRoundSong();
+  const onRoundStarted = async () => {
+    const { data: response } = await getSong();
+
+    if (isErrorResponse(response)) {
+      return;
+    }
+
+    if (response.url === "FIRST_ROUND") return;
+
+    tracks.clear();
+
+    const track = tracks.addTrack();
+    track.setIsBlocked(true);
+
+    await Sample.loadFromUrl(response.url, response.url, track);
     const { data } = await getCurrentTime();
     game.startTimer(data.time);
   };
 
   useEffect(() => {
-    onNewRound();
-  }, [game.currentRound]);
+    onRoundStarted();
+
+    () => {
+      tracks.clear();
+    };
+  }, []);
+
+  // console.log(toJS(tracks.tracks));
+
+  useSocketHandlers({
+    io: socketStore.io,
+    handlers: {
+      onRoundStarted,
+    },
+  });
 
   useEditorModeHotkey("esc", EditorMode.None);
   useEditorModeHotkey("c", EditorMode.Cut);
@@ -52,6 +84,7 @@ export const Editor = observer(() => {
       <EditorHeader />
       <EditorWorkArea />
       <EditorDropArea />
+      <BottomMenu />
     </VStack>
   );
 });

@@ -18,10 +18,12 @@ export const SCALE_1_SECONDS = 30;
 export const EditorTracks = observer(() => {
   const [startPosition, setStartPosition] = useState(0);
 
-  const ref = useRef(null);
+  const ref = useRef<HTMLDivElement>(null);
   const dimentions = useDimensions(ref, true);
 
-  const changeScale = (e: WheelEvent<HTMLDivElement>) => {
+  const changeScale = (e: WheelEvent) => {
+    e.preventDefault();
+
     const deltaScale = e.deltaY / 5000;
     const scale = Math.max(0.2, editor.scale + deltaScale);
 
@@ -33,6 +35,8 @@ export const EditorTracks = observer(() => {
     );
 
     editor.set({ scale, position });
+
+    return false;
   };
 
   const changePosition = useCallback(
@@ -61,6 +65,16 @@ export const EditorTracks = observer(() => {
     }
   }, [dimentions?.borderBox.width]);
 
+  useEffect(() => {
+    ref.current?.addEventListener("wheel", changeScale as any, {
+      passive: false,
+    });
+
+    return () => {
+      ref.current?.removeEventListener("wheel", changeScale as any);
+    };
+  }, [changeScale]);
+
   const onClick = (e: any) => {
     if (!dimentions) return;
 
@@ -78,7 +92,6 @@ export const EditorTracks = observer(() => {
 
   return (
     <VStack
-      onWheel={changeScale}
       onMouseDown={onMouseDown}
       onClick={onClick}
       spacing={0}
