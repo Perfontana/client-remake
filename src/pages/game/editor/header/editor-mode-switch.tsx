@@ -5,23 +5,36 @@ import { MdDelete } from "react-icons/md";
 import { AiOutlineDrag } from "react-icons/ai";
 import { editor, EditorMode } from "../../../../store/editor";
 import { PropsWithChildren } from "react";
+import { language } from "../../../../store/language";
 
 export const EditorModeSwitch = observer(() => {
   return (
     <HStack>
-      <EditorModeButton label="Drag mode" mode={EditorMode.None}>
+      <EditorModeButton
+        label={language.ui.editor.header.mode.drag}
+        mode={EditorMode.None}
+      >
         <Icon as={AiOutlineDrag} />
       </EditorModeButton>
 
-      <EditorModeButton label="Stretch mode" mode={EditorMode.Stretch}>
+      <EditorModeButton
+        label={language.ui.editor.header.mode.stretch}
+        mode={EditorMode.Stretch}
+      >
         <Icon as={BsArrowsExpand} transform="rotate(90deg)" />
       </EditorModeButton>
 
-      <EditorModeButton label="Cut mode" mode={EditorMode.Cut}>
+      <EditorModeButton
+        label={language.ui.editor.header.mode.cut}
+        mode={EditorMode.Cut}
+      >
         <Icon as={BsScissors} />
       </EditorModeButton>
 
-      <EditorModeButton label="Delete mode" mode={EditorMode.Delete}>
+      <EditorModeButton
+        label={language.ui.editor.header.mode.delete}
+        mode={EditorMode.Delete}
+      >
         <Icon as={MdDelete} />
       </EditorModeButton>
     </HStack>

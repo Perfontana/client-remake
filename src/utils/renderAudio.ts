@@ -14,6 +14,7 @@ export const renderAudio = async () => {
         const player = new Player();
 
         player.buffer = sample.player.buffer;
+        player.playbackRate = sample.speed;
         player
           .connect(channel)
           .sync()

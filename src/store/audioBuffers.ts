@@ -1,5 +1,5 @@
 import { makeAutoObservable } from "mobx";
-import { Buffer, ToneAudioBuffer } from "tone";
+import { ToneAudioBuffer } from "tone";
 
 export interface BufferInfo {
   buffer: ToneAudioBuffer;
@@ -27,8 +27,6 @@ export class AudioBuffers {
         (bufferInfo) => bufferInfo.name === name
       );
 
-      console.log("foundBuffer", foundBuffer);
-
       if (foundBuffer) {
         if (!foundBuffer.buffer.loaded) {
           foundBuffer.buffer.onload = resolve;
@@ -47,7 +45,6 @@ export class AudioBuffers {
       const audioBuffer = new ToneAudioBuffer(
         url,
         (buffer: ToneAudioBuffer | undefined) => {
-          console.log("LOaded");
           resolve(buffer);
         }
       );

@@ -5,6 +5,7 @@ import decodeArrayBuffer from "../utils/decodeArrayBuffer";
 import loadFile from "../utils/loadFile";
 import { audioBuffers } from "./audioBuffers";
 import { Track } from "./track";
+import waveforms from "./waveforms";
 
 export class Sample {
   id = nanoid(10);
@@ -37,12 +38,9 @@ export class Sample {
     this.position = position;
     this.offset = offset;
     this.fullLength = buffer.duration;
-    console.log(buffer.duration);
     this.length = length ?? this.fullLength - Time(offset).toSeconds();
 
     makeAutoObservable(this);
-
-    console.log(this.name);
   }
 
   get channel(): Channel {
@@ -60,11 +58,6 @@ export class Sample {
     this.length = options.length ?? this.length;
     this.speed = options.speed ?? this.speed;
 
-    // console.log("this.length", this.length);
-    // console.log("this.speed", this.speed);
-    // console.log("this.position", this.position);
-    // console.log("this.offset", this.offset);
-
     this.player.playbackRate = this.speed;
     this.resync();
   }
@@ -74,7 +67,7 @@ export class Sample {
   }
 
   copy(): Sample {
-    return new Sample(
+    const copy = new Sample(
       this.player.buffer,
       this.track,
       this.name,
@@ -82,6 +75,10 @@ export class Sample {
       this.offset,
       this.length
     );
+
+    copy.set({ speed: this.speed });
+
+    return copy;
   }
 
   removeChannel() {
@@ -108,8 +105,6 @@ export class Sample {
 
     const cutSampleLength = (cutPosition - this.position) * this.speed;
 
-    console.log(cutPosition, this.position, cutSampleLength);
-
     this.set({ length: cutSampleLength });
     copy.set({
       position: cutPosition,
@@ -124,7 +119,6 @@ export class Sample {
   remove() {
     this.player.unsync();
     this.player.dispose();
-    // waveforms.deleteWaveform(this);
     this.track.removeSample(this);
   }
 
@@ -136,7 +130,6 @@ export class Sample {
   ) {
     const buffer = await audioBuffers.getBuffer(name, url);
 
-    console.log("Created", buffer);
     if (!buffer) return;
 
     const newSample = new Sample(buffer, track, name, position);

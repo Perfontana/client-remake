@@ -6,7 +6,7 @@ import { useHotkeys } from "react-hotkeys-hook";
 import * as Tone from "tone";
 import { Transport } from "tone";
 import { isErrorResponse } from "../../../api/config";
-import { getCurrentTime, getSong } from "../../../api/rooms";
+import { getCurrentTime, getSong, sendSong } from "../../../api/rooms";
 import { useSocketHandlers } from "../../../socket/use-socket-handlers";
 import { editor, EditorMode } from "../../../store/editor";
 import game from "../../../store/game";
@@ -14,9 +14,11 @@ import { Sample } from "../../../store/sample";
 import { socketStore } from "../../../store/socket";
 import { sound } from "../../../store/sound";
 import tracks from "../../../store/tracks";
+import { renderAudio } from "../../../utils/renderAudio";
 import { useEditorModeHotkey } from "../../../utils/useEditorModeHotkey";
 import { BottomMenu } from "./bottom-menu/bottom-menu";
 import { EditorDropArea } from "./editor-drop-area";
+import { EditorReadyOverlay } from "./editor-ready-overlay";
 import { EditorHeader } from "./header/editor-header";
 import { EditorWorkArea } from "./track-samples/editor-work-area";
 
@@ -30,6 +32,11 @@ export const Editor = observer(() => {
   }, []);
 
   const onRoundStarted = async () => {
+    const { data } = await getCurrentTime();
+
+    game.set({ isPlayerReady: false });
+    game.startTimer(data.time);
+
     const { data: response } = await getSong();
 
     if (isErrorResponse(response)) {
@@ -44,8 +51,6 @@ export const Editor = observer(() => {
     track.setIsBlocked(true);
 
     await Sample.loadFromUrl(response.url, response.url, track);
-    const { data } = await getCurrentTime();
-    game.startTimer(data.time);
   };
 
   useEffect(() => {
@@ -56,12 +61,17 @@ export const Editor = observer(() => {
     };
   }, []);
 
-  // console.log(toJS(tracks.tracks));
-
   useSocketHandlers({
     io: socketStore.io,
     handlers: {
       onRoundStarted,
+      async onRoundTimerEnded() {
+        game.endTimer();
+
+        const data = await renderAudio();
+
+        sendSong(data);
+      },
     },
   });
 
@@ -71,7 +81,7 @@ export const Editor = observer(() => {
   useEditorModeHotkey("d", EditorMode.Delete);
 
   useHotkeys(
-    " ",
+    "space",
     () => {
       Tone.start();
       sound.isPaused ? sound.play() : sound.pause();
@@ -85,6 +95,7 @@ export const Editor = observer(() => {
       <EditorWorkArea />
       <EditorDropArea />
       <BottomMenu />
+      <EditorReadyOverlay />
     </VStack>
   );
 });

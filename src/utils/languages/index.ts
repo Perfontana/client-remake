@@ -63,6 +63,15 @@ export interface UIText {
       startRecording: string;
       stopRecording: string;
       sendSong: string;
+      mode: {
+        drag: string;
+        stretch: string;
+        cut: string;
+        delete: string;
+      };
+    };
+    readyOverlay: {
+      title: string;
     };
     trackOptions: {
       volume: string;
@@ -70,6 +79,9 @@ export interface UIText {
       mute: string;
       solo: string;
       remove: string;
+    };
+    bottomMenu: {
+      playerIsReady: string;
     };
   };
 }

@@ -5,6 +5,7 @@ import {
   IconButton,
   Text,
   Tooltip,
+  useToast,
 } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useCallback } from "react";
@@ -17,6 +18,7 @@ import {
   BsMicMute,
 } from "react-icons/bs";
 import * as Tone from "tone";
+import { isErrorResponse } from "../../../../api/config";
 import { sendSong } from "../../../../api/rooms";
 import game from "../../../../store/game";
 import { language } from "../../../../store/language";
@@ -25,10 +27,19 @@ import { renderAudio } from "../../../../utils/renderAudio";
 import { EditorModeSwitch } from "./editor-mode-switch";
 
 export const EditorHeader = observer(() => {
-  const sendRoundSong = useCallback(async () => {
-    const data = await renderAudio();
+  const toast = useToast();
 
-    sendSong(data);
+  const sendRoundSong = useCallback(async () => {
+    const songData = await renderAudio();
+
+    const { data } = await sendSong(songData);
+
+    if (isErrorResponse(data)) {
+      console.error("Can not send a song!", data);
+      return;
+    }
+
+    game.set({ isPlayerReady: true });
   }, []);
 
   const onPlayPauseClick = () => {
@@ -82,7 +93,11 @@ export const EditorHeader = observer(() => {
               await Tone.start();
 
               if (!sound.isRecording) {
-                await sound.startRecording();
+                try {
+                  await sound.startRecording();
+                } catch (error: any) {
+                  toast({ status: "error", title: error.message });
+                }
                 return;
               }
 

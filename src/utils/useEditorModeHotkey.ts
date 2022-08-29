@@ -5,6 +5,7 @@ export const useEditorModeHotkey = (key: string, mode: EditorMode) =>
   useHotkeys(
     key,
     (event) => {
+      console.log(event);
       if (event.type === "keydown") editor.set({ mode });
       else editor.set({ mode: EditorMode.None });
     },

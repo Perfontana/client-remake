@@ -1,57 +1,36 @@
-import { HStack, Text, VStack } from "@chakra-ui/react";
-import { toJS } from "mobx";
-import { observer } from "mobx-react-lite";
-import { useEffect, useState } from "react";
+import { useToast } from "@chakra-ui/react";
 import { useSocketHandlers } from "../../../../../socket/use-socket-handlers";
-import { auth } from "../../../../../store/auth";
 import game from "../../../../../store/game";
 import { socketStore } from "../../../../../store/socket";
 import Player from "../../../../../types/Player";
-import { PlayerAvatar } from "../../../lobby/player-avatar";
+import { PlayersReadyToast } from "./players-ready-toast";
 
-const player = new Audio("/player-ready-sound.wav");
-player.volume = 0.1;
+const soundPlayer = new Audio("/player-ready-sound.wav");
+soundPlayer.volume = 0.1;
 
-export const PlayersDisplay = observer(() => {
-  const [players, setPlayers] = useState<Player[]>([]);
-
-  useEffect(() => {
-    setPlayers(game.players);
-  }, [game.players]);
-
-  const onRoundStarted = async () => {
-    setPlayers(game.players);
-  };
+export const usePlayersReadynessToasts = () => {
+  const toast = useToast({});
 
   const onPlayerReady = async ({ name }: Pick<Player, "name">) => {
-    console.log(name, " is ready!");
+    soundPlayer.play();
 
-    player.play();
-    setPlayers((players) => players.filter((player) => player.name !== name));
+    const player = game.players.find((player) => player.name === name);
+
+    if (!player) {
+      console.error("Player is ready, but not found in the game store");
+      return;
+    }
+
+    toast({
+      position: "bottom-left",
+      render: () => <PlayersReadyToast player={player} />,
+    });
   };
 
   useSocketHandlers({
     io: socketStore.io,
     handlers: {
-      onRoundStarted,
       onPlayerReady,
     },
   });
-
-  return (
-    <VStack
-      bg={"gray.500"}
-      color={"white"}
-      p={2}
-      borderRadius={"md"}
-      align="flex-start"
-    >
-      <Text>Waiting for players...</Text>
-      <HStack>
-        {players.map((p) => (
-          <PlayerAvatar player={p} key={p.name} />
-        ))}
-      </HStack>
-    </VStack>
-  );
-});
+};

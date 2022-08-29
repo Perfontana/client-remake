@@ -50,6 +50,15 @@ export const russianTranslation: UIText = {
       startRecording: "Начать запись",
       stopRecording: "Закончить запись",
       sendSong: "Отправить трек",
+      mode: {
+        drag: "Перемещение",
+        stretch: "Растягивание (зажать S)",
+        cut: "Разрезание (зажать C)",
+        delete: "Удаление (зажать D)",
+      },
+    },
+    readyOverlay: {
+      title: "Вы отправили свою песню. Ожидаем других игроков...",
     },
     trackOptions: {
       mute: "Выключить трек",
@@ -57,6 +66,9 @@ export const russianTranslation: UIText = {
       remove: "Удалить трек",
       solo: "Переключить режим соло",
       volume: "Громкость",
+    },
+    bottomMenu: {
+      playerIsReady: "закончил",
     },
   },
 };

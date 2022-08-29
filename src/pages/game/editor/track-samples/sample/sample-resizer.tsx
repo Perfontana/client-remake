@@ -15,6 +15,8 @@ export const SampleResizer = observer(({ sample }: { sample: Sample }) => {
   });
 
   const onOffsetChange = ({ x }: any) => {
+    if (sample.track.isBlocked) return;
+
     if (editor.mode === EditorMode.None) {
       const deltaSeconds = -intervalFromPixelsToSeconds(
         x,
@@ -32,8 +34,6 @@ export const SampleResizer = observer(({ sample }: { sample: Sample }) => {
         offset === 0
           ? sample.length
           : startValues.length - deltaSeconds * startValues.speed;
-
-      console.log(startValues.speed);
 
       if (length < 0.2) return;
 
@@ -61,6 +61,8 @@ export const SampleResizer = observer(({ sample }: { sample: Sample }) => {
   };
 
   const onLengthChange = ({ x }: any) => {
+    if (sample.track.isBlocked) return;
+
     if (editor.mode === EditorMode.None) {
       const length = Math.min(
         startValues.length -

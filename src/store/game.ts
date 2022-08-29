@@ -1,4 +1,4 @@
-import { action, makeAutoObservable, runInAction } from "mobx";
+import { action, makeAutoObservable, runInAction, toJS } from "mobx";
 import { isErrorResponse } from "../api/config";
 import { getRoom, getSong, startGame } from "../api/rooms";
 import { SocketClient } from "../socket/socket-types";
@@ -21,10 +21,10 @@ class Game {
   timeLeft: number = 0;
   rounds: {
     player: string;
-    song: string;
     sent: boolean;
   }[][] = [];
   songs: Record<string, { player: string; url: string }[]> = {};
+  isPlayerReady: boolean = false;
 
   authorizedPlayer: Player | null = null;
 
@@ -64,6 +64,11 @@ class Game {
 
   set(values: Partial<Game>) {
     Object.assign(this, values);
+
+    // if (values.rounds)
+    //   this.isPlayerReady = !!this.rounds[this.currentRound].find(
+    //     (round) => round.player === auth.name
+    //   )?.sent;
   }
 
   clear() {

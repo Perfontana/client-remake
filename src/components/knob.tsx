@@ -1,4 +1,4 @@
-import { Box, Tooltip } from "@chakra-ui/react";
+import { Tooltip } from "@chakra-ui/react";
 import {
   MouseEventHandler,
   useCallback,
@@ -79,8 +79,6 @@ const Knob = ({ onChange, value, size = 25, min = 0, max = 1 }: KnobProps) => {
     };
   }, [isDragging, rotation]);
 
-  const style = { transform: `rotate(${rotation}deg)` };
-
   return (
     <Tooltip
       hasArrow
@@ -88,22 +86,22 @@ const Knob = ({ onChange, value, size = 25, min = 0, max = 1 }: KnobProps) => {
       isOpen={isDragging}
       label={value.toFixed(2)}
     >
-      <Box
+      <div
         ref={knobRef}
-        position="relative"
-        cursor={"n-resize"}
+        style={{ position: "relative", cursor: "ns-resize" }}
         onMouseDown={onClick}
       >
-        <Box
-          style={style}
-          m={0}
-          display="block"
-          position="relative"
-          w={`${size}px`}
-          h={`${size}px`}
-          borderRadius="full"
-          bg="#333"
-          overflow={"hidden"}
+        <div
+          style={{
+            transform: `rotate(${rotation}deg)`,
+            display: "block",
+            position: "relative",
+            width: `${size}px`,
+            height: `${size}px`,
+            borderRadius: "50%",
+            backgroundColor: "#333",
+            overflow: "hidden",
+          }}
         >
           <span
             style={{
@@ -116,8 +114,8 @@ const Knob = ({ onChange, value, size = 25, min = 0, max = 1 }: KnobProps) => {
               backgroundColor: "#d4d4d4",
             }}
           ></span>
-        </Box>
-      </Box>
+        </div>
+      </div>
     </Tooltip>
   );
 };

@@ -17,11 +17,18 @@ export interface TrackElementProps {
 export const TrackElement = observer(({ track }: TrackElementProps) => {
   const [, dropContainer] = useDrop(
     {
-      accept: ["sample", NativeTypes.FILE],
+      accept: ["sample", "url-sample", NativeTypes.FILE],
       hover(sample: Sample | null, monitor) {
         switch (monitor.getItemType()) {
           case "sample": {
-            if (!sample || sample.track === track) return;
+            if (
+              !sample ||
+              track.isBlocked ||
+              sample.track === track ||
+              sample.track.isBlocked
+            )
+              return;
+
             runInAction(() => sample.connectToTrack(track));
             break;
           }
@@ -43,6 +50,10 @@ export const TrackElement = observer(({ track }: TrackElementProps) => {
         switch (monitor.getItemType()) {
           case NativeTypes.FILE: {
             Sample.loadFromFile(item.files[0] as File, track, position);
+            break;
+          }
+          case "url-sample": {
+            Sample.loadFromUrl(item.name, item.url, track, position);
             break;
           }
         }

@@ -1,15 +1,15 @@
-import { HStack, Text } from "@chakra-ui/react";
-import { runInAction, toJS } from "mobx";
+import { Text } from "@chakra-ui/react";
+import { runInAction } from "mobx";
 import { observer } from "mobx-react-lite";
 import { MouseEvent, useEffect, useMemo } from "react";
-import { useDragDropManager, useDrag } from "react-dnd";
+import { useDrag, useDragDropManager } from "react-dnd";
 import { getEmptyImage } from "react-dnd-html5-backend";
 import { editor, EditorMode } from "../../../../../store/editor";
 import { Sample } from "../../../../../store/sample";
 import {
   intervalFromSecondsToPixels,
-  pointFromSecondsToPixels,
   pointFromPixelsToSeconds,
+  pointFromSecondsToPixels,
 } from "../../../../../utils/transformCoordinates";
 import { SampleResizer } from "./sample-resizer";
 import { SampleWaveform } from "./sample-waveform";
@@ -39,8 +39,6 @@ export const SampleElement = observer(({ sample }: { sample: Sample }) => {
     [editor.scale, editor.width, editor.position, sample.position]
   );
 
-  console.log(toJS(sample));
-
   const dragDropManager = useDragDropManager();
   const monitor = dragDropManager.getMonitor();
 
@@ -51,6 +49,8 @@ export const SampleElement = observer(({ sample }: { sample: Sample }) => {
         const initialSampleOffset = monitor.getInitialSourceClientOffset();
         const currentMouse = monitor.getClientOffset();
         const draggedSample = monitor.getItem();
+
+        if (sample.track.isBlocked) return;
 
         if (monitor.getItem()?.id !== sample.id) return;
 
@@ -88,6 +88,8 @@ export const SampleElement = observer(({ sample }: { sample: Sample }) => {
   );
 
   const onSampleClick = (e: MouseEvent<HTMLDivElement>) => {
+    if (sample.track.isBlocked) return;
+
     switch (editor.mode) {
       case EditorMode.Cut: {
         sample.cut(
@@ -106,6 +108,14 @@ export const SampleElement = observer(({ sample }: { sample: Sample }) => {
 
         break;
       }
+    }
+  };
+
+  const onMouseDown = (e: MouseEvent<HTMLDivElement>) => {
+    if (e.button === 0 && e.altKey && !sample.track.isBlocked) {
+      console.log("COPIED!");
+      const copy = sample.copy();
+      sample.track.addSample(copy);
     }
   };
 
@@ -151,6 +161,7 @@ export const SampleElement = observer(({ sample }: { sample: Sample }) => {
           overflow: "hidden",
         }}
         onClick={onSampleClick}
+        onMouseDown={onMouseDown}
       >
         <SampleResizer sample={sample} />
         <SampleWaveform sample={sample} />

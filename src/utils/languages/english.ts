@@ -50,6 +50,15 @@ export const englishTranslation: UIText = {
       startRecording: "Start recording",
       stopRecording: "Stop recording",
       sendSong: "Send song",
+      mode: {
+        drag: "Drag mode",
+        stretch: "Stretch mode (hold S to use)",
+        cut: "Cut mode (hold C to use)",
+        delete: "Delete mode (hold D to use)",
+      },
+    },
+    readyOverlay: {
+      title: `You've sent your song. Now waiting for other players...`,
     },
     trackOptions: {
       mute: "Mute track",
@@ -57,6 +66,9 @@ export const englishTranslation: UIText = {
       remove: "Remove track",
       solo: "Toggle solo mode",
       volume: "Volume",
+    },
+    bottomMenu: {
+      playerIsReady: "is ready",
     },
   },
 };

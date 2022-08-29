@@ -52,9 +52,6 @@ export const Game = observer(({ children }: GameProps & PropsWithChildren) => {
         game.set({ currentRound });
         navigate(`/room/${game.code}/editor`);
       },
-      onRoundTimerEnded() {
-        console.log("ROUND TIME ENDED!!");
-      },
       onGameEnded() {
         navigate(`/room/${game.code}/results`);
       },
