@@ -65,9 +65,11 @@ export class Sound {
 
       this.isRecording = false;
 
+      const track = tracks.addTrack();
+
       const sample = await Sample.loadFromFile(
         recording,
-        tracks.tracks[0],
+        track,
         this.startPosition
       );
 

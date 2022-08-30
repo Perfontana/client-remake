@@ -13,7 +13,7 @@ export const EditorDropArea = observer(() => {
 
   const [, dropContainer] = useDrop(
     {
-      accept: [NativeTypes.FILE],
+      accept: [NativeTypes.FILE, "url-sample"],
       drop(item: any, monitor) {
         switch (monitor.getItemType()) {
           case NativeTypes.FILE: {
@@ -22,6 +22,11 @@ export const EditorDropArea = observer(() => {
 
             operationsStack.push(() => tracks.removeTrack(track));
 
+            break;
+          }
+          case "url-sample": {
+            const track = tracks.addTrack();
+            Sample.loadFromUrl(item.name, item.url, track);
             break;
           }
         }

@@ -89,6 +89,14 @@ export const Editor = observer(() => {
     []
   );
 
+  useHotkeys(
+    "w",
+    () => {
+      sound.position = 0;
+    },
+    []
+  );
+
   return (
     <VStack minHeight={"100vh"} spacing={0} align={"stretch"} justify={"start"}>
       <EditorHeader />

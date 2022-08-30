@@ -4,12 +4,12 @@ export const pointFromPixelsToSeconds = (
   pixels: number,
   width: number,
   scale: number,
-  position: number
+  position: number,
+  dutation: number = SCALE_1_SECONDS
 ) => {
-  const positionSeconds =
-    (Math.floor(position) / width) * SCALE_1_SECONDS * scale;
+  const positionSeconds = (Math.floor(position) / width) * dutation * scale;
 
-  const seconds = (pixels / width) * SCALE_1_SECONDS * scale + positionSeconds;
+  const seconds = (pixels / width) * dutation * scale + positionSeconds;
 
   return seconds;
 };

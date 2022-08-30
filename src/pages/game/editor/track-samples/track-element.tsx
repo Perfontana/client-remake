@@ -35,6 +35,8 @@ export const TrackElement = observer(({ track }: TrackElementProps) => {
         }
       },
       drop(item: any, monitor) {
+        if (track.isBlocked) return;
+
         let position = monitor.getClientOffset()?.x || 0;
 
         position = Math.max(
