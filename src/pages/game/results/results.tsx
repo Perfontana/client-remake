@@ -97,30 +97,6 @@ export const Results = observer(() => {
             {game.players.map((player) => (
               <ResultsTab key={player.name} player={player} />
             ))}
-            {game.players.map((player) => (
-              <ResultsTab key={player.name} player={player} />
-            ))}
-            {game.players.map((player) => (
-              <ResultsTab key={player.name} player={player} />
-            ))}
-            {game.players.map((player) => (
-              <ResultsTab key={player.name} player={player} />
-            ))}
-            {game.players.map((player) => (
-              <ResultsTab key={player.name} player={player} />
-            ))}
-            {game.players.map((player) => (
-              <ResultsTab key={player.name} player={player} />
-            ))}
-            {game.players.map((player) => (
-              <ResultsTab key={player.name} player={player} />
-            ))}
-            {game.players.map((player) => (
-              <ResultsTab key={player.name} player={player} />
-            ))}
-            {game.players.map((player) => (
-              <ResultsTab key={player.name} player={player} />
-            ))}
           </TabList>
 
           <TabPanels>
