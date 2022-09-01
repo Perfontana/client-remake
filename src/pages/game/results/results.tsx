@@ -1,12 +1,10 @@
-import { ArrowForwardIcon } from "@chakra-ui/icons";
+import { DownloadIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
   HStack,
-  Icon,
   IconButton,
   Spinner,
-  Tab,
   TabList,
   TabPanel,
   TabPanels,
@@ -14,37 +12,27 @@ import {
   Text,
   Tooltip,
   useBoolean,
-  useDimensions,
   useMultiStyleConfig,
-  useShortcut,
   useTab,
   VStack,
 } from "@chakra-ui/react";
-import { toJS } from "mobx";
 import { observer } from "mobx-react-lite";
 import {
   forwardRef,
   MouseEvent,
   Ref,
-  useCallback,
   useEffect,
-  useMemo,
   useRef,
   useState,
-  WheelEvent,
 } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
-import { BsPause, BsPlay } from "react-icons/bs";
+import { BsDownload, BsPause, BsPlay } from "react-icons/bs";
 import Knob from "../../../components/knob";
-import { audioBuffers } from "../../../store/audioBuffers";
 import game from "../../../store/game";
 import { Sample } from "../../../store/sample";
-import { sound } from "../../../store/sound";
 import tracks from "../../../store/tracks";
-import waveforms from "../../../store/waveforms";
 import Player from "../../../types/Player";
 import { pointFromPixelsToSeconds } from "../../../utils/transformCoordinates";
-import { useMouseDrag } from "../../../utils/useMouseDrag";
 import { SampleWaveform } from "../editor/track-samples/sample/sample-waveform";
 import { PlayerAvatar } from "../lobby/player-avatar";
 
@@ -102,7 +90,7 @@ export const Results = observer(() => {
           <TabPanels>
             {songs.map(({ id, songs }, index) => (
               <TabPanel p={0} key={id} tabIndex={index}>
-                {songs.map((song) => (
+                {songs?.map((song) => (
                   <Audio src={song.url} player={song.player} />
                 ))}
               </TabPanel>
@@ -243,18 +231,34 @@ export const Audio = ({ src, player }: any) => {
           <PlayerAvatar player={game.players.find((p) => p.name === player)} />
         </Tooltip>
 
-        <Text
-          p={2}
-          pr={2}
-          zIndex={1}
-          color="white"
-          fontSize="10px"
-          alignSelf={"flex-start"}
-          justifySelf="flex-end"
-          whiteSpace={"nowrap"}
-        >
-          {position.toFixed(1)} / {audio.current?.duration?.toFixed(1) || "..."}
-        </Text>
+        <VStack justify={"space-between"} h={"full"}>
+          <Text
+            p={2}
+            pr={2}
+            zIndex={1}
+            color="white"
+            fontSize="10px"
+            whiteSpace={"nowrap"}
+          >
+            {position.toFixed(1)} /{" "}
+            {audio.current?.duration?.toFixed(1) || "..."}
+          </Text>
+
+          <IconButton
+            size={"sm"}
+            borderRadius={"none"}
+            colorScheme={"blackAlpha"}
+            aria-label="Download"
+            icon={<BsDownload />}
+            onClick={(e) => {
+              e.stopPropagation();
+
+              const link = document.createElement("a");
+              link.href = src;
+              link.click();
+            }}
+          />
+        </VStack>
       </HStack>
 
       <HStack

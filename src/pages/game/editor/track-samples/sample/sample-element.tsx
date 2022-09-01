@@ -164,7 +164,7 @@ export const SampleElement = observer(({ sample }: { sample: Sample }) => {
         onMouseDown={onMouseDown}
       >
         <SampleResizer sample={sample} />
-        <SampleWaveform sample={sample} />
+        <SampleWaveform sample={sample} color="#ffdd1d" />
 
         <Text ml={"5px"} whiteSpace="nowrap" fontSize={"10px"}>
           {sample.name}

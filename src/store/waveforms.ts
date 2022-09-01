@@ -47,6 +47,10 @@ class Waveforms {
   deleteWaveform(sample: Sample) {
     this.waveforms[sample.id] = "";
   }
+
+  clear() {
+    this.waveforms = {};
+  }
 }
 
 const waveforms = new Waveforms();

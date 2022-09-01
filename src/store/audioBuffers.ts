@@ -53,6 +53,10 @@ export class AudioBuffers {
       this._buffers.push(foundBuffer);
     });
   }
+
+  clear() {
+    this._buffers = [];
+  }
 }
 
 export const audioBuffers = new AudioBuffers();

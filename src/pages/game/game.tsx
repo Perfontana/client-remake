@@ -3,9 +3,12 @@ import { observer } from "mobx-react-lite";
 import { PropsWithChildren, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSocketHandlers } from "../../socket/use-socket-handlers";
+import { audioBuffers } from "../../store/audioBuffers";
 import { auth } from "../../store/auth";
 import game from "../../store/game";
 import { socketStore } from "../../store/socket";
+import tracks from "../../store/tracks";
+import waveforms from "../../store/waveforms";
 
 export interface GameProps {}
 
@@ -53,6 +56,9 @@ export const Game = observer(({ children }: GameProps & PropsWithChildren) => {
         navigate(`/room/${game.code}/editor`);
       },
       onGameEnded() {
+        tracks.clear();
+        waveforms.clear();
+        audioBuffers.clear();
         navigate(`/room/${game.code}/results`);
       },
     },
