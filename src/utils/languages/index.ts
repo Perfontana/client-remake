@@ -84,4 +84,46 @@ export interface UIText {
       playerIsReady: string;
     };
   };
+  guide: {
+    label: string;
+    header: string;
+    playback: {
+      header: string;
+      text1: string;
+      space: string;
+      spaceDescription: string;
+      wDescription: string;
+      text2: string;
+    };
+    navigation: {
+      header: string;
+      wheelClickDrag: string;
+      wheelClickDragDescription: string;
+      wheel: string;
+      wheelDescription: string;
+    };
+    samples: {
+      header: string;
+      addingSamples: {
+        header: string;
+        micro: string;
+        microText: string;
+        file: string;
+        fileText: string;
+        freesound: string;
+        freesoundText: string;
+        youtube: string;
+        youtubeText: string;
+        copy: string;
+        copyText: string;
+      };
+      changingSamples: {
+        header: string;
+        cDescription: string;
+        sDescription: string;
+        dDescription: string;
+        text1: string;
+      };
+    };
+  };
 }

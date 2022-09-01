@@ -5,7 +5,8 @@ const margin = 0;
 
 const drawSoundWave = async (
   audioBuffer: ToneAudioBuffer,
-  canvas: HTMLCanvasElement
+  canvas: HTMLCanvasElement,
+  color: string
 ) => {
   const { height } = canvas;
   const centerHeight = Math.ceil(height / 2);
@@ -31,7 +32,7 @@ const drawSoundWave = async (
   canvas.width = Math.ceil(float32Array.length / chunkSize + margin * 2);
 
   for (let index in array) {
-    ctx.strokeStyle = "#33ffff";
+    ctx.strokeStyle = color;
     ctx.beginPath();
     ctx.moveTo(
       margin + Number(index),

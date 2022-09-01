@@ -14,6 +14,7 @@ import {
   PopoverTrigger,
   Spinner,
   Text,
+  Tooltip,
   useBoolean,
   useDimensions,
   useDisclosure,
@@ -76,18 +77,22 @@ export const SamplePicker = observer(() => {
       closeOnBlur={false}
     >
       <PopoverTrigger>
-        <Button onClick={onToggle}>Select a sample</Button>
+        <Tooltip placement="top-end" label="Find samples on freesound.org">
+          <Button colorScheme={"blue"} onClick={onToggle}>
+            Freesound
+          </Button>
+        </Tooltip>
       </PopoverTrigger>
 
       <PopoverContent>
         <VStack
-          borderRadius={10}
           spacing={4}
           maxH={"400px"}
           bg="white"
           position="relative"
           overflowY={"scroll"}
           justifySelf={"flex-end"}
+          boxShadow="1px 1px 10px #00000050"
         >
           <HStack
             p={3}
@@ -272,7 +277,7 @@ export const Audio = ({ src, name, duration }: any) => {
             top: 0,
             bottom: 0,
             left: 0,
-            backgroundColor: "#53ba9e",
+            backgroundColor: "#319795",
             zIndex: 0,
           }}
         ></div>
@@ -287,7 +292,7 @@ export const Audio = ({ src, name, duration }: any) => {
           {name.length > 20 && "..."}
         </Text>
 
-        <Text pr={2} zIndex={1} fontSize="14px" whiteSpace={"nowrap"}>
+        <Text pr={2} zIndex={1} fontSize="10px" whiteSpace={"nowrap"}>
           {position.toFixed(1)} / {duration.toFixed(1) || "..."}
         </Text>
       </HStack>

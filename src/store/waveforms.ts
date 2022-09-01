@@ -7,12 +7,13 @@ class Waveforms {
   drawWaveform(
     sample: Sample,
     canvas: HTMLCanvasElement,
-    width: number = canvas.width
+    width: number = canvas.width,
+    color: string = "teal"
   ) {
     let waveform = this.waveforms[sample.name];
 
     if (!waveform) {
-      drawSoundWave(sample.player.buffer, canvas);
+      drawSoundWave(sample.player.buffer, canvas, color);
       this.waveforms[sample.name] = canvas.toDataURL("png", 1);
     }
 
@@ -26,7 +27,7 @@ class Waveforms {
 
       if (ctx) {
         // Need this because sometimes canvas.width doesn't match the real size on screen
-        canvas.width = width;
+        // canvas.width = width;
         ctx.clearRect(0, 0, width, canvas.height);
         ctx.drawImage(
           image,

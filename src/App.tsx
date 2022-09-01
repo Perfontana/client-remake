@@ -11,6 +11,7 @@ import {
 import { Editor } from "./pages/game/editor/editor";
 import { Game } from "./pages/game/game";
 import { Lobby } from "./pages/game/lobby/lobby";
+import { Results } from "./pages/game/results/results";
 import { MainPage } from "./pages/main-page/main-page";
 
 function App() {
@@ -31,7 +32,7 @@ function App() {
               <Route index={true} element={<Navigate to={"/"} />} />
               <Route path=":id" element={<Lobby />} />
               <Route path=":id/editor" element={<Editor />} />
-              Editor
+              <Route path=":id/results" element={<Results />} />
             </Route>
           </Routes>
         </BrowserRouter>

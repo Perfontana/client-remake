@@ -5,34 +5,43 @@ import { Sample } from "../../../../../store/sample";
 import waveforms from "../../../../../store/waveforms";
 import { intervalFromSecondsToPixels } from "../../../../../utils/transformCoordinates";
 
-export const SampleWaveform = observer(({ sample }: { sample: Sample }) => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+export const SampleWaveform = observer(
+  ({ sample, color }: { sample: Sample; color: string }) => {
+    const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  const drawWaveform = useCallback(() => {
-    if (canvasRef.current) {
-      waveforms.drawWaveform(
-        sample,
-        canvasRef.current,
-        intervalFromSecondsToPixels(
-          sample.length / sample.speed,
-          editor.width,
-          editor.scale
-        )
-      );
-    }
-  }, [sample.length, sample.speed, sample.offset, editor.width, editor.scale]);
+    const drawWaveform = useCallback(() => {
+      if (canvasRef.current) {
+        waveforms.drawWaveform(
+          sample,
+          canvasRef.current,
+          intervalFromSecondsToPixels(
+            sample.length / sample.speed,
+            editor.width,
+            editor.scale
+          ),
+          color
+        );
+      }
+    }, [
+      sample.length,
+      sample.speed,
+      sample.offset,
+      editor.width,
+      editor.scale,
+    ]);
 
-  useEffect(drawWaveform, [drawWaveform]);
+    useEffect(drawWaveform, [drawWaveform]);
 
-  return (
-    <canvas
-      style={{
-        width: "100%",
-        height: "100%",
-        position: "absolute",
-      }}
-      className="sample-waveform"
-      ref={canvasRef}
-    ></canvas>
-  );
-});
+    return (
+      <canvas
+        style={{
+          width: "100%",
+          height: "100%",
+          position: "absolute",
+        }}
+        className="sample-waveform"
+        ref={canvasRef}
+      ></canvas>
+    );
+  }
+);

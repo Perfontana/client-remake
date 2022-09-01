@@ -8,7 +8,7 @@ export const BottomMenu = observer(() => {
   usePlayersReadynessToasts();
 
   return (
-    <HStack position={"fixed"} bottom={0} right={0}>
+    <HStack padding={2} position={"fixed"} bottom={0} right={0}>
       <YoutubeLoader />
       <SamplePicker />
     </HStack>
