@@ -119,7 +119,7 @@ export const SampleResizer = observer(({ sample }: { sample: Sample }) => {
         onMouseDown={(e) => {
           e.stopPropagation();
           e.preventDefault();
-          onOffsetDrag(e);
+          onOffsetDrag(e as any);
         }}
         onClick={(e) => e.stopPropagation()}
         position={"absolute"}
@@ -134,7 +134,7 @@ export const SampleResizer = observer(({ sample }: { sample: Sample }) => {
         onMouseDown={(e) => {
           e.stopPropagation();
           e.preventDefault();
-          onLengthDrag(e);
+          onLengthDrag(e as any);
         }}
         onClick={(e) => e.stopPropagation()}
         position={"absolute"}

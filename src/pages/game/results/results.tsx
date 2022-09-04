@@ -228,7 +228,7 @@ export const Audio = ({ src, player }: any) => {
         justify="space-between"
       >
         <Tooltip shouldWrapChildren label={player}>
-          <PlayerAvatar player={game.players.find((p) => p.name === player)} />
+          <PlayerAvatar player={game.players.find((p) => p.name === player)!} />
         </Tooltip>
 
         <VStack justify={"space-between"} h={"full"}>
