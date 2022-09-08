@@ -3,6 +3,7 @@ import { isErrorResponse } from "../api/config";
 import { getRoom, getSong, startGame } from "../api/rooms";
 import { SocketClient } from "../socket/socket-types";
 import Player from "../types/Player";
+import { RoundPlayerResult, Song } from "../types/Room";
 import { auth } from "./auth";
 import { Sample } from "./sample";
 import tracks from "./tracks";
@@ -19,11 +20,8 @@ class Game {
   players: Player[] = [];
   isEnded: boolean = false;
   timeLeft: number = 0;
-  rounds: {
-    player: string;
-    sent: boolean;
-  }[][] = [];
-  songs: Record<string, { player: string; url: string }[]> = {};
+  rounds: RoundPlayerResult[][] = [];
+  songs: Record<string, Song[]> = {};
   isPlayerReady: boolean = false;
 
   authorizedPlayer: Player | null = null;

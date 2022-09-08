@@ -1,5 +1,17 @@
 import Player from "./Player";
 
+export interface RoundPlayerResult {
+  player: string;
+  song: string;
+  sent: boolean;
+}
+
+export interface Song {
+  _id: string;
+  player: string;
+  url: string;
+}
+
 export default interface Room {
   code: string;
   name: string;
@@ -8,11 +20,7 @@ export default interface Room {
   players: Player[];
   isStarted: boolean;
   isEnded: boolean;
-  rounds: {
-    player: string;
-    song: string;
-    sent: boolean;
-  }[][];
-  songs: Record<string, { player: string; url: string }[]>;
+  rounds: RoundPlayerResult[][];
+  songs: Record<string, Song[]>;
   currentRound: number;
 }

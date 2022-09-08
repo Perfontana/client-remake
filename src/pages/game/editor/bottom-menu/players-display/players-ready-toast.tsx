@@ -11,7 +11,7 @@ export interface PlayersReadyToastProps {
 export const PlayersReadyToast = observer(
   ({ player }: PlayersReadyToastProps) => {
     return (
-      <HStack>
+      <HStack bg={"white"} p={4} borderRadius={5}>
         <PlayerAvatar player={player} />
         <Text> {language.ui.editor.bottomMenu.playerIsReady}</Text>
       </HStack>
