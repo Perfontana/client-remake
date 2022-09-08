@@ -92,7 +92,7 @@ export const EditorTracks = observer(() => {
 
   return (
     <VStack
-      onMouseDown={onMouseDown}
+      onMouseDown={onMouseDown as any}
       onClick={onClick}
       spacing={0}
       ref={ref}

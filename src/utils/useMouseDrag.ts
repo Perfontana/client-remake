@@ -1,4 +1,4 @@
-import { MouseEvent, useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export interface UseMouseDragParams {
   button: number;
@@ -15,7 +15,7 @@ export const useMouseDrag = ({
   const [isDragging, setIsDragging] = useState(false);
 
   const onMouseUp = useCallback(
-    (e: MouseEvent<HTMLElement>) => {
+    (e: MouseEvent) => {
       if (e.button === button) {
         setIsDragging(false);
       }
@@ -24,7 +24,7 @@ export const useMouseDrag = ({
   );
 
   const onMouseMove = useCallback(
-    (e: MouseEvent<HTMLElement>) => {
+    (e: MouseEvent) => {
       onChange &&
         onChange({ x: dragStart.x - e.clientX, y: dragStart.y - e.clientY });
     },
@@ -32,7 +32,7 @@ export const useMouseDrag = ({
   );
 
   const onMouseDown = useCallback(
-    (e: MouseEvent<HTMLElement>) => {
+    (e: MouseEvent) => {
       if (e.button === button) {
         setDragStart({ x: e.clientX, y: e.clientY });
         setIsDragging(true);
