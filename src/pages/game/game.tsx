@@ -33,7 +33,6 @@ export const Game = observer(({ children }: GameProps & PropsWithChildren) => {
         toast({ title: "You've been disconnected", status: "error" });
       },
       onNewPlayerConnected(player) {
-        console.log("new player!", player);
         game.addPlayer(player);
       },
       onPlayerDisconnected(player) {

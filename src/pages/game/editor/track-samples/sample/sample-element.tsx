@@ -113,7 +113,6 @@ export const SampleElement = observer(({ sample }: { sample: Sample }) => {
 
   const onMouseDown = (e: MouseEvent<HTMLDivElement>) => {
     if (e.button === 0 && e.altKey && !sample.track.isBlocked) {
-      console.log("COPIED!");
       const copy = sample.copy();
       sample.track.addSample(copy);
     }
@@ -164,7 +163,12 @@ export const SampleElement = observer(({ sample }: { sample: Sample }) => {
         onMouseDown={onMouseDown}
       >
         <SampleResizer sample={sample} />
-        <SampleWaveform sample={sample} color="#ffdd1d" />
+        <SampleWaveform
+          sample={sample}
+          color="#ffdd1d"
+          containerWidth={editor.width}
+          containerScale={editor.scale}
+        />
 
         <Text ml={"5px"} whiteSpace="nowrap" fontSize={"10px"}>
           {sample.name}

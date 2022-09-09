@@ -7,7 +7,7 @@ class Waveforms {
   drawWaveform(
     sample: Sample,
     canvas: HTMLCanvasElement,
-    width: number = canvas.width,
+    width: number,
     color: string = "teal"
   ) {
     let waveform = this.waveforms[sample.name];
@@ -27,7 +27,7 @@ class Waveforms {
 
       if (ctx) {
         // Need this because sometimes canvas.width doesn't match the real size on screen
-        // canvas.width = width;
+        canvas.width = width;
         ctx.clearRect(0, 0, width, canvas.height);
         ctx.drawImage(
           image,

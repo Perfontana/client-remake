@@ -45,8 +45,6 @@ export const YoutubeLoader = observer(() => {
       videoId = match[2];
     }
 
-    console.log(videoId);
-
     const { data } = await downloadFromYoutube(videoId);
 
     off();
@@ -56,8 +54,6 @@ export const YoutubeLoader = observer(() => {
     if (isErrorResponse(data)) {
       return toast({ status: "error", title: data.message });
     }
-
-    console.log(data);
 
     const newTrack = tracks.addTrack();
 

@@ -46,7 +46,6 @@ class Game {
         this.set({ loading: false, authorizedPlayer, ...room })
       );
     } catch (e) {
-      console.log(e);
       runInAction(() => this.set({ loading: false, error: e }));
     }
   }

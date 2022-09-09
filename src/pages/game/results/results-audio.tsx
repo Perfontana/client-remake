@@ -86,8 +86,6 @@ export const ResultsAudio = observer(({ src, player }: any) => {
       audio.current.duration
     );
 
-    console.log(dimentions.width);
-
     audio.current.currentTime = position;
   };
 
@@ -201,7 +199,14 @@ export const ResultsAudio = observer(({ src, player }: any) => {
           }}
         ></div>
 
-        {sample && <SampleWaveform sample={sample} color={"#ffdd1d"} />}
+        {sample && (
+          <SampleWaveform
+            sample={sample}
+            color={"#ffdd1d"}
+            containerWidth={window.innerWidth}
+            containerScale={1}
+          />
+        )}
       </HStack>
     </HStack>
   );
