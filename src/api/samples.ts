@@ -36,3 +36,10 @@ export const downloadFromYoutube = async (videoId: string) => {
     `/samples/youtube/${videoId}`
   );
 };
+
+export const googletts = async (text: string, voice: string) => {
+  return axios.post<{ name: string; url: string }>(`/samples/googletts`, {
+    text,
+    voice,
+  });
+};

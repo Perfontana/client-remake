@@ -16,6 +16,7 @@
     "axios": "^0.27.2",
     "formik": "^2.2.9",
     "framer-motion": "^6.5.1",
+    "iso-language-codes": "^1.1.0",
     "mobx": "^6.6.1",
     "mobx-react-lite": "^3.4.0",
     "react": "^18.2.0",
