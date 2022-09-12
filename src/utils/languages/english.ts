@@ -37,6 +37,8 @@ export const englishTranslation: UIText = {
       roundTime: "Round time in seconds",
       save: "Save",
     },
+    joinRoom: "Join game",
+    guide: "How to play",
   },
   editor: {
     dropArea: {

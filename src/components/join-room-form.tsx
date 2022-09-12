@@ -21,10 +21,11 @@ export interface PlayerData {
 export interface JoinRoomFormProps {
   onSubmit: (data: PlayerData) => any;
   isLoading: boolean;
+  buttonText: string;
 }
 
 export const JoinRoomForm = observer(
-  ({ onSubmit, isLoading }: JoinRoomFormProps) => {
+  ({ onSubmit, isLoading, buttonText }: JoinRoomFormProps) => {
     const validationSchema = useMemo(() => {
       return Yup.object().shape({
         name: Yup.string()
@@ -62,7 +63,7 @@ export const JoinRoomForm = observer(
                   <FormErrorMessage>{errors.name}</FormErrorMessage>
                 </FormControl>
                 <Button isLoading={isLoading} w="full" type="submit">
-                  {language.ui.mainPage.createRoomBtn}
+                  {buttonText}
                 </Button>
               </VStack>
             </form>

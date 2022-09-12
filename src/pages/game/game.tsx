@@ -68,7 +68,7 @@ export const Game = observer(({ children }: GameProps & PropsWithChildren) => {
       if (game.isEnded) navigate(`/room/${game.code}/results`);
       else navigate(`/room/${game.code}/editor`);
     }
-  }, []);
+  }, [game.isStarted, game.isEnded]);
 
   return <>{children}</>;
 });

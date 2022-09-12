@@ -37,6 +37,8 @@ export const russianTranslation: UIText = {
       roundTime: "Длительность раунда в секундах",
       save: "Сохранить",
     },
+    joinRoom: "Присоединиться",
+    guide: "Управление в игре",
   },
   editor: {
     dropArea: {

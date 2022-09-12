@@ -11,22 +11,21 @@ import {
 import { observer } from "mobx-react-lite";
 import { useCallback } from "react";
 import {
-  BsPlay,
-  BsPause,
-  BsStop,
-  BsMic,
   BsArrowRight,
+  BsMic,
   BsMicMute,
+  BsPause,
+  BsPlay,
   BsQuestion,
+  BsStop,
 } from "react-icons/bs";
 import * as Tone from "tone";
 import { isErrorResponse } from "../../../../api/config";
-import { sendSong } from "../../../../api/rooms";
 import { GuideModal } from "../../../../components/guide-modal";
+import { audioUploader } from "../../../../store/audioUploader";
 import game from "../../../../store/game";
 import { language } from "../../../../store/language";
 import { sound } from "../../../../store/sound";
-import { renderAudio } from "../../../../utils/renderAudio";
 import { EditorModeSwitch } from "./editor-mode-switch";
 
 export const EditorHeader = observer(() => {
@@ -34,12 +33,13 @@ export const EditorHeader = observer(() => {
   const { isOpen, onClose, onOpen } = useDisclosure();
 
   const sendRoundSong = useCallback(async () => {
-    const songData = await renderAudio();
+    const result = await audioUploader.uploadSong();
 
-    const { data } = await sendSong(songData);
+    if (!result) return;
 
-    if (isErrorResponse(data)) {
-      console.error("Can not send a song!", data);
+    if (isErrorResponse(result.data)) {
+      toast({ status: "error", description: result.data.message });
+      console.error("Can not send a song!", result.data);
       return;
     }
 

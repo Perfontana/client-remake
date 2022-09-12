@@ -5,6 +5,7 @@ import { isErrorResponse } from "../../api/config";
 import { createRoom, joinRoom } from "../../api/rooms";
 import { JoinRoomForm } from "../../components/join-room-form";
 import { auth } from "../../store/auth";
+import { language } from "../../store/language";
 import { ActiveRoomNotice } from "./active-room-notice";
 
 export const MainPage = observer(() => {
@@ -53,7 +54,11 @@ export const MainPage = observer(() => {
       direction={{ base: "column", md: "row" }}
     >
       <Flex align="center" justify="center" h="full" flex={1}>
-        <JoinRoomForm onSubmit={onSubmit} isLoading={isLoading} />
+        <JoinRoomForm
+          onSubmit={onSubmit}
+          isLoading={isLoading}
+          buttonText={language.ui.mainPage.createRoomBtn}
+        />
       </Flex>
       {auth.token && (
         <Flex align="center" justify="center" h="full" flex={1}>

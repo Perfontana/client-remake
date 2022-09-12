@@ -12,6 +12,7 @@ import { isErrorResponse } from "../../../api/config";
 import { joinRoom } from "../../../api/rooms";
 import { JoinRoomForm, PlayerData } from "../../../components/join-room-form";
 import { auth } from "../../../store/auth";
+import { language } from "../../../store/language";
 
 export interface JoinRoomModalProps {
   roomCode: string;
@@ -49,8 +50,12 @@ export const JoinRoomModal = observer(
         <ModalOverlay />
         <ModalContent>
           <VStack align={"center"} justify="center">
-            <ModalHeader>Join room</ModalHeader>
-            <JoinRoomForm isLoading={isLoading} onSubmit={joinGame} />
+            <ModalHeader>{language.ui.lobby.joinRoom}</ModalHeader>
+            <JoinRoomForm
+              isLoading={isLoading}
+              onSubmit={joinGame}
+              buttonText={language.ui.lobby.joinRoom}
+            />
           </VStack>
         </ModalContent>
       </Modal>

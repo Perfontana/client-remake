@@ -22,19 +22,6 @@ export const SampleWaveform = observer(
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
     const drawWaveform = useCallback(() => {
-      console.log({
-        sample,
-        canvas: canvasRef.current,
-        width: intervalFromSecondsToPixels(
-          sample.length / sample.speed,
-          containerWidth,
-          containerScale
-        ),
-        color,
-        containerWidth,
-        containerScale,
-      });
-
       if (canvasRef.current) {
         waveforms.drawWaveform(
           sample,

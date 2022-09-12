@@ -8,6 +8,7 @@ import { Transport } from "tone";
 import { isErrorResponse } from "../../../api/config";
 import { getCurrentTime, getSong, sendSong } from "../../../api/rooms";
 import { useSocketHandlers } from "../../../socket/use-socket-handlers";
+import { audioUploader } from "../../../store/audioUploader";
 import { editor, EditorMode } from "../../../store/editor";
 import game from "../../../store/game";
 import { Sample } from "../../../store/sample";
@@ -19,6 +20,7 @@ import { useEditorModeHotkey } from "../../../utils/useEditorModeHotkey";
 import { BottomMenu } from "./bottom-menu/bottom-menu";
 import { EditorDropArea } from "./editor-drop-area";
 import { EditorReadyOverlay } from "./editor-ready-overlay";
+import { EditorUploadOverlay } from "./editor-upload-overlay";
 import { EditorHeader } from "./header/editor-header";
 import { EditorWorkArea } from "./track-samples/editor-work-area";
 
@@ -68,9 +70,9 @@ export const Editor = observer(() => {
       async onRoundTimerEnded() {
         game.endTimer();
 
-        const data = await renderAudio();
+        if (game.isPlayerReady) return;
 
-        sendSong(data);
+        audioUploader.uploadSong();
       },
     },
   });
@@ -104,6 +106,7 @@ export const Editor = observer(() => {
       <EditorDropArea />
       <BottomMenu />
       <EditorReadyOverlay />
+      <EditorUploadOverlay />
     </VStack>
   );
 });

@@ -50,6 +50,8 @@ export interface UIText {
       playerCount: string;
       save: string;
     };
+    joinRoom: string;
+    guide: string;
   };
   editor: {
     dropArea: {

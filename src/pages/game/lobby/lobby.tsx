@@ -6,6 +6,7 @@ import {
   ModalContent,
   ModalOverlay,
   Text,
+  useDisclosure,
   useToast,
   VStack,
 } from "@chakra-ui/react";
@@ -14,6 +15,7 @@ import { BsCheck } from "react-icons/bs";
 import { useNavigate, useParams } from "react-router-dom";
 import { isErrorResponse } from "../../../api/config";
 import { startGame, updateRoom } from "../../../api/rooms";
+import { GuideModal } from "../../../components/guide-modal";
 import { JoinRoomForm } from "../../../components/join-room-form";
 import { auth } from "../../../store/auth";
 import game from "../../../store/game";
@@ -29,6 +31,8 @@ export const Lobby = observer(({}: LobbyProps) => {
   const { id } = useParams();
   const toast = useToast();
   const navigate = useNavigate();
+
+  const { isOpen, onClose, onOpen } = useDisclosure();
 
   if (game.isStarted) navigate(`/room/${id}/editor`);
 
@@ -76,11 +80,18 @@ export const Lobby = observer(({}: LobbyProps) => {
           justify="center"
           h={"100vh"}
         >
-          <VStack w={"70%"} p={6} rounded="md">
-            <Button onClick={start} alignSelf={"end"} colorScheme={"green"}>
-              <Icon as={BsCheck} /> Start game
+          <HStack w={"70%"} p={6} rounded="md">
+            <Button variant={"outline"} colorScheme="teal" onClick={onOpen}>
+              {language.ui.lobby.guide}
             </Button>
-          </VStack>
+            {game.authorizedPlayer?.isOwner && (
+              <Button onClick={start} justifySelf={"end"} colorScheme={"green"}>
+                <Icon as={BsCheck} /> Start game
+              </Button>
+            )}
+          </HStack>
+
+          <GuideModal isOpen={isOpen} onClose={onClose} />
 
           <HStack bg={"white"} w={"70%"} p={6} rounded="md">
             <HStack overflowX={"scroll"} flex={"1"}>

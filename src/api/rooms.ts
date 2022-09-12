@@ -48,8 +48,11 @@ export const getCurrentTime = async () => {
   return axios.get<any>("/rooms/timer");
 };
 
-export const sendSong = async (formData: FormData) => {
-  return axios.post("/rooms/song", formData);
+export const sendSong = async (
+  formData: FormData,
+  onUploadProgress: (progress: ProgressEvent) => void
+) => {
+  return axios.post("/rooms/song", formData, { onUploadProgress });
 };
 
 export const getSong = async () => {
