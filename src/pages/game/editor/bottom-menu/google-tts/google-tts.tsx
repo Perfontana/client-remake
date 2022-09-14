@@ -110,7 +110,10 @@ export const GoogleTTS = observer(() => {
           <form onSubmit={loadFromYoutube} style={{ width: "100%" }}>
             <InputGroup>
               <InputLeftElement>
-                <LanguageSelect onChange={(e) => setVoice(e)} value={voice} />
+                <LanguageSelect
+                  onChange={(e: string) => setVoice(e)}
+                  value={voice}
+                />
               </InputLeftElement>
               <Input
                 type="text"
