@@ -19,6 +19,7 @@ import { FormEvent, useState } from "react";
 import { FaYoutube } from "react-icons/fa";
 import { isErrorResponse } from "../../../../../api/config";
 import { downloadFromYoutube } from "../../../../../api/samples";
+import { language } from "../../../../../store/language";
 import { Sample } from "../../../../../store/sample";
 import tracks from "../../../../../store/tracks";
 
@@ -68,7 +69,10 @@ export const YoutubeLoader = observer(() => {
       closeOnBlur={false}
     >
       <PopoverTrigger>
-        <Tooltip placement="top-end" label="Load sound from youtube">
+        <Tooltip
+          placement="top-end"
+          label={language.ui.editor.bottomMenu.youtube.tooltipText}
+        >
           <Button
             isLoading={isLoading}
             colorScheme={"red"}
@@ -95,6 +99,7 @@ export const YoutubeLoader = observer(() => {
           <form onSubmit={loadFromYoutube} style={{ width: "100%" }}>
             <InputGroup>
               <Input
+                placeholder={language.ui.editor.bottomMenu.youtube.placeholder}
                 type="text"
                 onChange={(e) => setLink(e.target.value)}
                 value={link}

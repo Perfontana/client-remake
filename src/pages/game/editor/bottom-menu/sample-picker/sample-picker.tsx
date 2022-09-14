@@ -31,6 +31,7 @@ import {
   SampleSearchQuerry,
   searchSample,
 } from "../../../../../api/samples";
+import { language } from "../../../../../store/language";
 import { Sample } from "../../../../../store/sample";
 import { Track } from "../../../../../store/track";
 import tracks from "../../../../../store/tracks";
@@ -77,7 +78,10 @@ export const SamplePicker = observer(() => {
       closeOnBlur={false}
     >
       <PopoverTrigger>
-        <Tooltip placement="top-end" label="Find samples on freesound.org">
+        <Tooltip
+          placement="top-end"
+          label={language.ui.editor.bottomMenu.freesound.tooltipText}
+        >
           <Button colorScheme={"blue"} onClick={onToggle}>
             Freesound
           </Button>
@@ -108,6 +112,9 @@ export const SamplePicker = observer(() => {
             <form style={{ width: "100%" }} onSubmit={searchSamples}>
               <InputGroup>
                 <Input
+                  placeholder={
+                    language.ui.editor.bottomMenu.freesound.placeholder
+                  }
                   type="text"
                   onChange={(e) => setSearch(e.target.value)}
                   value={search}

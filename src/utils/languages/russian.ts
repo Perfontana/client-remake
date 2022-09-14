@@ -71,6 +71,14 @@ export const russianTranslation: UIText = {
     },
     bottomMenu: {
       playerIsReady: "закончил",
+      freesound: {
+        placeholder: "Какой звук вы хотите найти?",
+        tooltipText: "Найти семплы на freesound.org",
+      },
+      youtube: {
+        placeholder: "Вставьте ссылку на видео",
+        tooltipText: "Добавить звук из видео",
+      },
     },
   },
   guide: {

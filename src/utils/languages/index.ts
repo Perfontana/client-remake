@@ -84,6 +84,14 @@ export interface UIText {
     };
     bottomMenu: {
       playerIsReady: string;
+      freesound: {
+        placeholder: string;
+        tooltipText: string;
+      };
+      youtube: {
+        placeholder: string;
+        tooltipText: string;
+      };
     };
   };
   guide: {

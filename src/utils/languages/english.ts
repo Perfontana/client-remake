@@ -71,6 +71,14 @@ export const englishTranslation: UIText = {
     },
     bottomMenu: {
       playerIsReady: "is ready",
+      freesound: {
+        placeholder: "What sound do you want to find?",
+        tooltipText: "Find samples on freesound.org",
+      },
+      youtube: {
+        placeholder: "Paste video url or ID",
+        tooltipText: "Load sound from youtube",
+      },
     },
   },
   guide: {
