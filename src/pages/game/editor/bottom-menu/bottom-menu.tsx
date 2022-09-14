@@ -10,7 +10,6 @@ export const BottomMenu = observer(() => {
 
   return (
     <HStack padding={2} position={"fixed"} bottom={0} right={0}>
-      <GoogleTTS />
       <YoutubeLoader />
       <SamplePicker />
     </HStack>
