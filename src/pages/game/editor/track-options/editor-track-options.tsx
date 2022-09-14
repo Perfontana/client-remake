@@ -40,15 +40,7 @@ export const EditorTrackOptions = observer(({ track }: EditorTrackOptions) => {
       <VStack spacing={0}>
         <Tooltip hasArrow label={language.ui.editor.trackOptions.volume}>
           <span>
-            <Knob
-              size={20}
-              value={track.volume}
-              onChange={(value) => {
-                track.setVolume(value);
-              }}
-              min={-50}
-              max={20}
-            />
+            <TrackVolumeControl track={track} />
           </span>
         </Tooltip>
       </VStack>
@@ -56,15 +48,7 @@ export const EditorTrackOptions = observer(({ track }: EditorTrackOptions) => {
       <VStack spacing={0}>
         <Tooltip hasArrow label={language.ui.editor.trackOptions.pan}>
           <span>
-            <Knob
-              size={20}
-              value={track.pan}
-              onChange={(value) => {
-                track.setPan(value);
-              }}
-              min={-1}
-              max={1}
-            />
+            <TrackPanControl track={track} />
           </span>
         </Tooltip>
       </VStack>
@@ -105,5 +89,33 @@ export const EditorTrackOptions = observer(({ track }: EditorTrackOptions) => {
         </Tooltip>
       </VStack>
     </HStack>
+  );
+});
+
+const TrackVolumeControl = observer(({ track }: { track: Track }) => {
+  return (
+    <Knob
+      size={20}
+      value={track.volume}
+      onChange={(value) => {
+        track.setVolume(value);
+      }}
+      min={-50}
+      max={20}
+    />
+  );
+});
+
+const TrackPanControl = observer(({ track }: { track: Track }) => {
+  return (
+    <Knob
+      size={20}
+      value={track.pan}
+      onChange={(value) => {
+        track.setPan(value);
+      }}
+      min={-1}
+      max={1}
+    />
   );
 });
