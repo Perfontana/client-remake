@@ -31,8 +31,8 @@ const codeList = Object.keys(by639_1);
 const LanguageSelect = ({ onChange, value }: any) => {
   return (
     <Select
+      placeholder="Select language"
       onChange={(e) => {
-        console.log(e.target.value);
         onChange(e.target.value);
       }}
       value={value}
@@ -83,7 +83,10 @@ export const GoogleTTS = observer(() => {
       closeOnBlur={false}
     >
       <PopoverTrigger>
-        <Tooltip placement="top-end" label="Load sound from youtube">
+        <Tooltip
+          placement="top-end"
+          label="Voice the text with Google translate"
+        >
           <Button
             isLoading={isLoading}
             colorScheme={"green"}
@@ -108,14 +111,16 @@ export const GoogleTTS = observer(() => {
         >
           <PopoverCloseButton zIndex={4} top={"0"} left={"0"} />
           <form onSubmit={loadFromYoutube} style={{ width: "100%" }}>
+            <InputGroup mb={5}>
+              <LanguageSelect
+                onChange={(e: string) => setVoice(e)}
+                value={voice}
+              />
+            </InputGroup>
+
             <InputGroup>
-              <InputLeftElement>
-                <LanguageSelect
-                  onChange={(e: string) => setVoice(e)}
-                  value={voice}
-                />
-              </InputLeftElement>
               <Input
+                placeholder="Write your text"
                 type="text"
                 onChange={(e) => setText(e.target.value)}
                 value={text}
